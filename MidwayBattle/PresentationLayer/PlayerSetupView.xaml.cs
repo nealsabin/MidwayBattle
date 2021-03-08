@@ -67,7 +67,7 @@ namespace MidwayBattle.PresentationLayer
             errorMessage = "";
             if(NameTextBox.Text == "")
             {
-                errorMessage += "Player Name is requited.\n";
+                errorMessage += "Player Name is required.\n";
             }
             else
             {

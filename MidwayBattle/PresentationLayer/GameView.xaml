@@ -8,8 +8,11 @@
         Title="Developed by Neal Sabin" 
         Height="550" 
         Width="800"
-        Background="#EBEBEB">
+        Background="#EBEBEB"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="SingleBorderWindow">
     <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibility"/>
         <Style x:Key="ContainerStyle" TargetType="Border">
             <Setter Property="Background" Value="#DADADA"/>
             <Setter Property="BorderBrush" Value="#525252"/>
@@ -80,6 +83,60 @@
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
+        <Style x:Key="LocationQuadLabel" TargetType="Label">
+            <Setter Property="Background" Value="#75a76e"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="20"/>
+        </Style>
+        <Style x:Key="DirectionButtonStyle" TargetType="Button">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Background" Value="#525252"/>
+            <Setter Property="Foreground" Value="#EBEBEB"/>
+            <!--<Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid 
+                            Width="{TemplateBinding Width}" 
+                            Height="{TemplateBinding Height}" 
+                            ClipToBounds="True">
+                            <Rectangle 
+                                x:Name="innerRectangle" 
+                                HorizontalAlignment="Stretch" 
+                                VerticalAlignment="Stretch" 
+                                Fill="{TemplateBinding Background}" 
+                                RadiusX="5" 
+                                RadiusY="5" />
+                            -->
+            <!-- Present Content (text) of the button. -->
+            <!--
+                            <DockPanel Name="myContentPresenterDockPanel">
+                                <ContentPresenter 
+                                    x:Name="myContentPresenter" 
+                                    Margin="2" 
+                                    HorizontalAlignment="Center"
+                                    Content="{TemplateBinding  Content}" 
+                                    TextBlock.Foreground="Black" />
+                            </DockPanel>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>-->
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <SolidColorBrush Color="Red"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -94,8 +151,7 @@
             VerticalContentAlignment="Center"
             HorizontalContentAlignment="Left"
             FontSize="16"
-            FontWeight="Medium"
-            />
+            FontWeight="Medium"/>
         <Button
             x:Name="Button_Help"
             Style="{StaticResource TopBannerButtonStyle}"
@@ -118,11 +174,164 @@
             <Border
                 Style="{StaticResource ContainerStyle}"
                 Grid.Column="0">
-                <Label
-                    Content="Map/Controls"
-                    FontSize="20"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Center"/>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid
+                        Grid.Row="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="1.5*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Style="{StaticResource ContainerHeaderStyle}"
+                            Content="GAME MAP"/>
+                        <Border
+                            Grid.Row="1"
+                            Background="#659BDB"
+                            BorderBrush="#525252"
+                            BorderThickness="3"
+                            CornerRadius="5"
+                            Margin="35 0 35 5">
+                            <Grid
+                                Grid.Row="1"
+                                Background="#659BDB">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label
+                                    Style="{StaticResource LocationQuadLabel}"
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Content="NW"
+                                    Visibility="{Binding IsNwQuad, Converter={StaticResource BooleanToVisibility}}"/>
+                                <Label
+                                    Style="{StaticResource LocationQuadLabel}"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Content="NE"
+                                    Visibility="{Binding IsNeQuad, Converter={StaticResource BooleanToVisibility}}"/>
+                                <Label
+                                    Style="{StaticResource LocationQuadLabel}"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Content="SE"
+                                    Visibility="{Binding IsSeQuad, Converter={StaticResource BooleanToVisibility}}"/>
+                                <Label
+                                    Style="{StaticResource LocationQuadLabel}"
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Content="SW"
+                                    Visibility="{Binding IsSwQuad, Converter={StaticResource BooleanToVisibility}}"/>
+                            </Grid>
+                        </Border>
+                        <Border
+                            Style="{StaticResource ContainerStyle}"
+                            Grid.Row="2"
+                            Background="#EBEBEB"
+                            Margin="10 5 10 5">
+                            <Grid
+                                Grid.Row="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Label
+                                    Style="{StaticResource ContainerHeaderStyle}"
+                                    Content="LOCATION INFO"
+                                    FontSize="12"/>
+                                <TextBox
+                                    Grid.Row="1"
+                                    Style="{StaticResource SubContainerMessageTextBoxStyle}"
+                                    Text="{Binding CurrentLocation.Name, Mode=OneWay}"/>
+                                <TextBox
+                                    Grid.Row="2"
+                                    Style="{StaticResource SubContainerMessageTextBoxStyle}"
+                                    Text="{Binding CurrentLocation.Message, Mode=OneWay}"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    <Border
+                        Grid.Row="1"
+                        Style="{StaticResource ContainerStyle}"
+                        Background="#EBEBEB"
+                        Margin="10 5 10 10">
+                        <Grid
+                            Grid.Row="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Label
+                                Grid.Row="0"
+                                Style="{StaticResource ContainerHeaderStyle}"
+                                Content="MOVE VESSEL"
+                                FontSize="12"/>
+                            <Grid
+                                Grid.Row="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Button
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Style="{StaticResource DirectionButtonStyle}"
+                                    VerticalAlignment="Bottom"
+                                    Content="N"
+                                    Name="NorthTravelButton"
+                                    Visibility="{Binding HasNorthLocation, Converter={StaticResource BooleanToVisibility}}"
+                                    Click="NorthTravelButton_Click"
+                                    />
+                                <Button
+                                    Grid.Row="1"
+                                    Grid.Column="2"
+                                    Style="{StaticResource DirectionButtonStyle}"
+                                    HorizontalAlignment="Left"
+                                    Content="E"
+                                    Name="EastTravelButton"
+                                    Visibility="{Binding HasEastLocation, Converter={StaticResource BooleanToVisibility}}"
+                                    Click="EastTravelButton_Click"/>
+                                <Button
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    Style="{StaticResource DirectionButtonStyle}"
+                                    VerticalAlignment="Top"
+                                    Content="S"
+                                    Name="SouthTravelButton"
+                                    Visibility="{Binding HasSouthLocation, Converter={StaticResource BooleanToVisibility}}"
+                                    Click="SouthTravelButton_Click"/>
+                                <Button
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Style="{StaticResource DirectionButtonStyle}"
+                                    HorizontalAlignment="Right"
+                                    Content="W"
+                                    Name="WestTravelButton"
+                                    Visibility="{Binding HasWestLocation, Converter={StaticResource BooleanToVisibility}}"
+                                    Click="WestTravelButton_Click"/>
+                            </Grid>
+                        </Grid>
+                    </Border>
+
+                </Grid>
             </Border>
             <Border
                 Style="{StaticResource ContainerStyle}"
@@ -217,11 +426,12 @@
                             <TextBox
                                 Grid.Row="1"
                                 Style="{StaticResource SubContainerMessageTextBoxStyle}"
-                                Text="{Binding MessageDisplay, Mode=OneWay}"/>    
+                                Text="{Binding MessageDisplay, Mode=OneWay}"
+                                />
                         </Grid>
 
                     </Border>
-                    
+
                     <Grid
                         Grid.Row="2">
                         <Border
@@ -331,11 +541,14 @@
             <Border
                 Style="{StaticResource ContainerStyle}"
                 Grid.Column="2">
-                <Label
-                    Content="Inventory/Actions/Stats"
-                    FontSize="20"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Center"/>
+                <Grid>
+                    <Label
+                        Content="Inventory/Actions/Stats"
+                        FontSize="20"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"/>
+                </Grid>
+
             </Border>
 
         </Grid>

@@ -31,5 +31,25 @@ namespace MidwayBattle.PresentationLayer
         {
             Environment.Exit(0);
         }
+
+        private void NorthTravelButton_Click(object sender, RoutedEventArgs e)
+        {
+            _gameViewModel.MoveNorth();
+        }
+
+        private void EastTravelButton_Click(object sender, RoutedEventArgs e)
+        {
+            _gameViewModel.MoveEast();
+        }
+
+        private void SouthTravelButton_Click(object sender, RoutedEventArgs e)
+        {
+            _gameViewModel.MoveSouth();
+        }
+
+        private void WestTravelButton_Click(object sender, RoutedEventArgs e)
+        {
+            _gameViewModel.MoveWest();
+        }
     }
 }

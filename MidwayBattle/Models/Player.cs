@@ -17,6 +17,7 @@ namespace MidwayBattle.Models
         private int _health;
         private int _experiencePoints;
         private PositionTitle _title;
+        private List<Location> _locationsVisited;
         #endregion
 
 
@@ -41,10 +42,22 @@ namespace MidwayBattle.Models
             get { return _title; }
             set { _title = value; }
         }
+        public List<Location> LocationsVisited
+        {
+            get { return _locationsVisited; }
+            set { _locationsVisited = value; }
+        }
+        public Player()
+        {
+            _locationsVisited = new List<Location>();
+        }
+
+        public bool HasVisited(Location location)
+        {
+            return _locationsVisited.Contains(location);
+        }
         #endregion
 
     }
-
-
 
 }

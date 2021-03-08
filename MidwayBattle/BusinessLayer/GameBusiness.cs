@@ -12,7 +12,7 @@ namespace MidwayBattle.BusinessLayer
     public class GameBusiness
     {
         GameViewModel _gameViewModel;
-        bool _newPlayer = true;
+        bool _newPlayer = false;
         Player _player = new Player();
         Enemy _enemy = new Enemy();
         List<string> _messages;
@@ -23,7 +23,6 @@ namespace MidwayBattle.BusinessLayer
             SetupPlayer();
             InitializeDataset();
             InstantiateAndShowView();
-
         }
 
         private void SetupPlayer()
@@ -55,14 +54,21 @@ namespace MidwayBattle.BusinessLayer
         //Create view model with data set
         private void InstantiateAndShowView()
         {
-            _gameViewModel = new GameViewModel(_player,_enemy, GameData.InitialMessages());
+            _gameViewModel = new GameViewModel(
+                _player,
+                _enemy, 
+                GameData.InitialMessages(), 
+                GameData.GameMap(), 
+                GameData.InitialGameMapLocation()
+                );
+
             GameView gameView = new GameView(_gameViewModel);
 
             gameView.DataContext = _gameViewModel;
 
             gameView.Show();
 
-            _playerSetupView.Close();
+            //_playerSetupView.Close();
         }
     }
 }
