@@ -21,7 +21,6 @@ namespace MidwayBattle.DataLayer
                 Health = 100,
                 Lives = 3,
                 ExperiencePoints = 0
-
             };
         }
 

@@ -279,17 +279,6 @@ namespace MidwayBattle.PresentationLayer
 
         #region METHODS
 
-        /// <summary>
-        /// game time event, publishes every 1 second
-        /// </summary>
-        //public void GameTimer()
-        //{
-        //    DispatcherTimer timer = new DispatcherTimer();
-        //    timer.Interval = TimeSpan.FromMilliseconds(1000);
-        //    timer.Tick += OnGameTimerTick;
-        //    timer.Start();
-        //}
-
         private void UpdateAvailableTravelPoints()
         {
             NorthLocation = null;
@@ -341,18 +330,12 @@ namespace MidwayBattle.PresentationLayer
         private void OnPlayerMove()
         {
             //
-            // update player stats when in new location
+            // adding location to list of visited locations and updating experience points
             //
             if (!_player.HasVisited(_currentLocation))
             {
-                //
-                // add location to list of visited locations
-                //
                 _player.LocationsVisited.Add(_currentLocation);
 
-                // 
-                // update experience points
-                //
                 _player.ExperiencePoints += _currentLocation.ModifyExperiencePoints;
 
                 OnPropertyChanged(nameof(Player));
@@ -404,23 +387,6 @@ namespace MidwayBattle.PresentationLayer
         }
 
         #region GAME TIME METHODS
-
-        //private TimeSpan GameTime()
-        //{
-        //    return DateTime.Now - _gameStartTime;
-        //}
-
-        /// <summary>
-        /// game timer event handler
-        /// 1) update mission time on window
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        //void OnGameTimerTick(object sender, EventArgs e)
-        //{
-        //    _gameTime = DateTime.Now - _gameStartTime;
-        //    MissionTimeDisplay = "Mission Time " + _gameTime.ToString(@"hh\:mm\:ss");
-        //}
 
         /// <summary>
         /// initial setup of the game session view
