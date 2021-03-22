@@ -7,7 +7,8 @@
         mc:Ignorable="d" 
         Height="325" 
         Width="300"
-        Background="#EBEBEB">
+        Background="#EBEBEB"
+        WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <Style x:Key="ContainerStyle" TargetType="Border">
             <Setter Property="Background" Value="#DADADA"/>

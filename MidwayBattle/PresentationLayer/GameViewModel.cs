@@ -21,7 +21,6 @@ namespace MidwayBattle.PresentationLayer
 
         #region FIELDS
 
-
         private DateTime _gameStartTime;
         private string _gameTimeDisplay;
         //private TimeSpan _gameTime;
@@ -33,6 +32,9 @@ namespace MidwayBattle.PresentationLayer
         private Map _gameMap;
         private Location _currentLocation;
         private Location _northLocation, _eastLocation, _southLocation, _westLocation;
+        private string _currentLocationInformation;
+
+        private GameItem _currentGameItem;
 
         #endregion
 
@@ -63,7 +65,9 @@ namespace MidwayBattle.PresentationLayer
             set
             {
                 _currentLocation = value;
+                _currentLocationInformation = _currentLocation.Description;
                 OnPropertyChanged(nameof(CurrentLocation));
+                OnPropertyChanged(nameof(CurrentLocationInformation));
                 OnPropertyChanged(nameof(IsNwQuad));
                 OnPropertyChanged(nameof(IsNeQuad));
                 OnPropertyChanged(nameof(IsSeQuad));
@@ -112,6 +116,33 @@ namespace MidwayBattle.PresentationLayer
                 _westLocation = value;
                 OnPropertyChanged(nameof(WestLocation));
                 OnPropertyChanged(nameof(HasWestLocation));
+            }
+        }
+        public string CurrentLocationInformation
+        {
+            get { return _currentLocationInformation; }
+            set
+            {
+                _currentLocationInformation = value;
+                OnPropertyChanged(nameof(CurrentLocationInformation));
+            }
+        }
+        public string MissionTimeDisplay
+        {
+            get { return _gameTimeDisplay; }
+            set
+            {
+                _gameTimeDisplay = value;
+                OnPropertyChanged(nameof(MissionTimeDisplay));
+            }
+        }
+        public GameItem CurrentGameItem
+        {
+            get { return _currentGameItem; }
+            set
+            {
+                _currentGameItem = value;
+                //OnPropertyChanged(nameof(CurrentGameItem));
             }
         }
 
@@ -175,7 +206,6 @@ namespace MidwayBattle.PresentationLayer
         #endregion
 
 
-
         #region Current Quadrant Display
         public bool IsNwQuad
         {
@@ -235,20 +265,7 @@ namespace MidwayBattle.PresentationLayer
         }
         #endregion
 
-
-        public string MissionTimeDisplay
-        {
-            get { return _gameTimeDisplay; }
-            set
-            {
-                _gameTimeDisplay = value;
-                OnPropertyChanged(nameof(MissionTimeDisplay));
-            }
-        }
         #endregion
-
-
-
 
         #region CONSTRUCTORS
 
@@ -272,7 +289,17 @@ namespace MidwayBattle.PresentationLayer
             _gameMap.CurrentLocationCoordinates = currentLocationCoordinates;
             _currentLocation = _gameMap.CurrentLocation;
             InitializeView();
+        }
 
+        /// <summary>
+        /// initial setup of the game session view
+        /// </summary>
+        private void InitializeView()
+        {
+            _gameStartTime = DateTime.Now;
+            UpdateAvailableTravelPoints();
+            _currentLocationInformation = CurrentLocation.Description;
+            _player.UpdateInventoryCategories();
         }
 
         #endregion
@@ -388,14 +415,72 @@ namespace MidwayBattle.PresentationLayer
 
         #region GAME TIME METHODS
 
-        /// <summary>
-        /// initial setup of the game session view
-        /// </summary>
-        private void InitializeView()
+        #region Actions
+        public void AddItemToInventory()
         {
-            _gameStartTime = DateTime.Now;
-            UpdateAvailableTravelPoints();
+            if(_currentGameItem != null && _currentLocation.GameItems.Contains(_currentGameItem))
+            {
+                GameItem selectedGameItem = _currentGameItem as GameItem;
+
+                _currentLocation.RemoveGameItemFromLocation(selectedGameItem);
+                _player.AddGameItemToInventory(selectedGameItem);
+
+                OnPlayerPickUp(selectedGameItem);
+            }
         }
+        public void RemoveItemFromInventory()
+        {
+            if(_currentGameItem != null)
+            {
+                GameItem selectedGameItem = _currentGameItem as GameItem;
+
+                _currentLocation.AddGameItemToLocation(selectedGameItem);
+                _player.RemoveGameItemFromInventory(selectedGameItem);
+
+                OnPlayerPutDown(selectedGameItem);
+            }
+        }
+        public void OnUseGameItem()
+        {
+            switch (_currentGameItem)
+            {
+                case Weapon weapon:
+                    ProcessWeaponUse(weapon);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void ProcessWeaponUse(Weapon weapon)
+        {
+            _enemy.Health -= weapon.Damage;
+            OnPropertyChanged(nameof(Enemy));
+            CheckEnemyHealth(Enemy);
+        }
+
+        private void CheckEnemyHealth(Enemy enemy)
+        {
+            if(_enemy.Health <= 0)
+            {
+                _enemy.Lives -= 1;
+                _enemy.Health = 100;
+                OnPropertyChanged(nameof(Enemy));
+            }
+        } 
+
+        private void OnPlayerPickUp(GameItem gameItem)
+        {
+            _player.ExperiencePoints += gameItem.ExperiencePoints;
+            OnPropertyChanged(nameof(Player));
+        }
+
+        private void OnPlayerPutDown(GameItem gameItem)
+        {
+            _player.ExperiencePoints -= gameItem.ExperiencePoints;
+            OnPropertyChanged(nameof(Player));
+        }
+        #endregion
 
         #endregion
 

@@ -12,7 +12,7 @@ namespace MidwayBattle.BusinessLayer
     public class GameBusiness
     {
         GameViewModel _gameViewModel;
-        bool _newPlayer = true;
+        bool _newPlayer = false;
         Player _player = new Player();
         Enemy _enemy = new Enemy();
         List<string> _messages;
@@ -68,7 +68,7 @@ namespace MidwayBattle.BusinessLayer
 
             gameView.Show();
 
-            _playerSetupView.Close();
+            //_playerSetupView.Close();
         }
     }
 }

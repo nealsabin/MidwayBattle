@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MidwayBattle.PresentationLayer"
         mc:Ignorable="d"
         Title="Developed by Neal Sabin" 
-        Height="550" 
+        Height="650" 
         Width="800"
         Background="#EBEBEB"
         WindowStartupLocation="CenterScreen"
@@ -176,14 +176,14 @@
                 Grid.Column="0">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="2*"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="2.5*"/>
+                        <RowDefinition Height="1.1*"/>
                     </Grid.RowDefinitions>
                     <Grid
                         Grid.Row="0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="40"/>
-                            <RowDefinition Height="1.5*"/>
+                            <RowDefinition Height="1*"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <Label
@@ -197,7 +197,7 @@
                             BorderBrush="#525252"
                             BorderThickness="3"
                             CornerRadius="5"
-                            Margin="35 0 35 5">
+                            Margin="30 0 30 5">
                             <Grid
                                 Grid.Row="1"
                                 Background="#659BDB">
@@ -338,9 +338,9 @@
                 Grid.Column="1">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="1.6*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="2.25*"/>
+                        <RowDefinition Height="1.1*"/>
+                        <RowDefinition Height="1.2*"/>
+                        <RowDefinition Height="1.25*"/>
                     </Grid.RowDefinitions>
                     <Grid
                         Grid.Row="0">
@@ -417,21 +417,49 @@
                             Grid.Row="1">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="30"/>
+                                <RowDefinition Height="3*"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <Label
                                 Style="{StaticResource ContainerHeaderStyle}"
                                 Content="INTEL"
                                 FontSize="12"/>
-                            <TextBox
+                            <DataGrid
                                 Grid.Row="1"
-                                Style="{StaticResource SubContainerMessageTextBoxStyle}"
-                                Text="{Binding MessageDisplay, Mode=OneWay}"
-                                />
+                                x:Name="LocationsItemsDataGrid"
+                                Height="Auto"
+                                Width="Auto"
+                                Margin="5"
+                                ItemsSource="{Binding CurrentLocation.GameItems}"
+                                SelectedItem="{Binding CurrentGameItem}"
+                                AutoGenerateColumns="False"
+                                HeadersVisibility="Column">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn 
+                                        Header="Item Desc." 
+                                        IsReadOnly="True"
+                                        Binding="{Binding Information, Mode=OneWay}"
+                                        Width="*">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style>
+                                                <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <Button 
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                Content="Pick Up" 
+                                Background="#659BDB"
+                                Foreground="#525252"
+                                FontWeight="Bold"
+                                Width="55"
+                                Height="25"
+                                Click="PickUpButton_Click"/>
                         </Grid>
-
                     </Border>
-
                     <Grid
                         Grid.Row="2">
                         <Border
@@ -542,11 +570,66 @@
                 Style="{StaticResource ContainerStyle}"
                 Grid.Column="2">
                 <Grid>
-                    <Label
-                        Content="Inventory/Actions/Stats"
-                        FontSize="20"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Center"/>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1.6*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="2.25*"/>
+                        </Grid.RowDefinitions>
+                        <Grid
+                            Grid.Row="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Label
+                                Grid.Row="0"
+                                Style="{StaticResource ContainerHeaderStyle}"
+                                Content="INVENTORY"/>
+                            <DataGrid 
+                                x:Name="InventoryDataGrid"
+                                Grid.Row="1"
+                                Margin="5"
+                                ItemsSource="{Binding Player.Inventory}"
+                                SelectedItem="{Binding CurrentGameItem}"
+                                AutoGenerateColumns="False"
+                                HeadersVisibility="Column">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Name"
+                                                Binding="{Binding Name, Mode=OneWay}"
+                                                Width="2*"/>
+                                    <DataGridTextColumn Header="Damage"
+                                                Binding="{Binding Damage, Mode=OneWay}"
+                                                Width="*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                        <StackPanel
+                            Grid.Row="1"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Top">
+                             <Button 
+                                Content="Fire / Use" 
+                                Margin="10 0 10 0"
+                                Width="75"
+                                Height="25"
+                                Background="#F44721"
+                                Foreground="#525252"
+                                FontWeight="Bold"
+                                Click="UseButton_Click"/>
+                            <Button 
+                                Content="Put Down" 
+                                Margin="10 0 10 0"
+                                Width="75"
+                                Height="25"
+                                Background="#659BDB"
+                                Foreground="#525252"
+                                FontWeight="Bold"
+                                Click="PutDownButton_Click"/>   
+                        </StackPanel>
+
+                    </Grid>
                 </Grid>
 
             </Border>

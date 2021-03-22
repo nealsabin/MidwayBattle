@@ -12,6 +12,7 @@ namespace MidwayBattle.Models
         private Location[,] _mapLocations;
         private int _maxRows, _maxColumns;
         private GameMapCoordinates _currentLocationCoordinates;
+        private List<GameItem> _standardGameItems;
 
         //Properties
         public Location[,] MapLocations
@@ -136,7 +137,12 @@ namespace MidwayBattle.Models
 
             return westLocation;
         }
-         
+        public List<GameItem> StandardGameItems
+        {
+            get { return _standardGameItems; }
+            set { _standardGameItems = value; }
+        }
+
         #endregion
 
 

@@ -51,5 +51,29 @@ namespace MidwayBattle.PresentationLayer
         {
             _gameViewModel.MoveWest();
         }
+
+        private void PickUpButton_Click(object sender, RoutedEventArgs e)
+        {
+            if(LocationsItemsDataGrid.SelectedItem != null)
+            {
+                _gameViewModel.AddItemToInventory();
+            }
+        }
+
+        private void UseButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (InventoryDataGrid.SelectedItem != null)
+            {
+                _gameViewModel.OnUseGameItem();
+            }
+        }
+
+        private void PutDownButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (InventoryDataGrid.SelectedItem != null)
+            {
+                _gameViewModel.RemoveItemFromInventory();
+            }
+        }
     }
 }

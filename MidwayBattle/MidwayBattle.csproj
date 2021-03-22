@@ -73,10 +73,13 @@
     <Compile Include="DataLayer\GameData.cs" />
     <Compile Include="Models\Character.cs" />
     <Compile Include="Models\Enemy.cs" />
+    <Compile Include="Models\GameItem.cs" />
     <Compile Include="Models\GameMapLocation.cs" />
     <Compile Include="Models\Location.cs" />
     <Compile Include="Models\Map.cs" />
     <Compile Include="Models\Player.cs" />
+    <Compile Include="Models\Provisions.cs" />
+    <Compile Include="Models\Weapon.cs" />
     <Compile Include="PresentationLayer\GameView.xaml.cs">
       <DependentUpon>GameView.xaml</DependentUpon>
     </Compile>
