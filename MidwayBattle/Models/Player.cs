@@ -21,6 +21,7 @@ namespace MidwayBattle.Models
         private List<Location> _locationsVisited;
         private ObservableCollection<GameItem> _inventory;
         private ObservableCollection<GameItem> _weapons;
+        private ObservableCollection<GameItem> _provisions;
         #endregion
 
 
@@ -60,12 +61,18 @@ namespace MidwayBattle.Models
             get { return _weapons; }
             set { _weapons = value; }
         }
+        public ObservableCollection<GameItem> Provisions
+        {
+            get { return _provisions; }
+            set { _provisions = value; }
+        }
         #endregion
 
         public Player()
         {
             _locationsVisited = new List<Location>();
             _weapons = new ObservableCollection<GameItem>();
+            _provisions = new ObservableCollection<GameItem>();
         }
 
         public bool HasVisited(Location location)
@@ -80,10 +87,12 @@ namespace MidwayBattle.Models
         public void UpdateInventoryCategories()
         {
             Weapons.Clear();
+            Provisions.Clear();
 
             foreach (var gameItem in _inventory)
             {    
                 if (gameItem is Weapon) Weapons.Add(gameItem);
+                if (gameItem is Provisions) Provisions.Add(gameItem);
             }
         }
         /// <summary>

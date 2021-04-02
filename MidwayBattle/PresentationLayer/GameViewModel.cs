@@ -142,7 +142,7 @@ namespace MidwayBattle.PresentationLayer
             set
             {
                 _currentGameItem = value;
-                //OnPropertyChanged(nameof(CurrentGameItem));
+                OnPropertyChanged(nameof(CurrentGameItem));
             }
         }
 
@@ -426,6 +426,7 @@ namespace MidwayBattle.PresentationLayer
                 _player.AddGameItemToInventory(selectedGameItem);
 
                 OnPlayerPickUp(selectedGameItem);
+                _player.UpdateInventoryCategories();
             }
         }
         public void RemoveItemFromInventory()
@@ -438,6 +439,7 @@ namespace MidwayBattle.PresentationLayer
                 _player.RemoveGameItemFromInventory(selectedGameItem);
 
                 OnPlayerPutDown(selectedGameItem);
+                _player.UpdateInventoryCategories();
             }
         }
         public void OnUseGameItem()
@@ -447,9 +449,18 @@ namespace MidwayBattle.PresentationLayer
                 case Weapon weapon:
                     ProcessWeaponUse(weapon);
                     break;
+                case Provisions provisions:
+                    ProcessProvisionsUse(provisions);
+                    break;
                 default:
                     break;
             }
+        }
+
+        private void ProcessProvisionsUse(Provisions provisions)
+        {
+            _player.Health += provisions.Value;
+            OnPropertyChanged(nameof(Player));
         }
 
         private void ProcessWeaponUse(Weapon weapon)

@@ -62,7 +62,7 @@ namespace MidwayBattle.PresentationLayer
 
         private void UseButton_Click(object sender, RoutedEventArgs e)
         {
-            if (InventoryDataGrid.SelectedItem != null)
+            if (PlayerDataTabControl.SelectedItem != null)
             {
                 _gameViewModel.OnUseGameItem();
             }
@@ -70,7 +70,7 @@ namespace MidwayBattle.PresentationLayer
 
         private void PutDownButton_Click(object sender, RoutedEventArgs e)
         {
-            if (InventoryDataGrid.SelectedItem != null)
+            if (PlayerDataTabControl.SelectedItem != null)
             {
                 _gameViewModel.RemoveItemFromInventory();
             }

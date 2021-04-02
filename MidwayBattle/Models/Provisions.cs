@@ -9,14 +9,17 @@ namespace MidwayBattle.Models
     public class Provisions : GameItem
     {
         public int Value { get; set; }
+
         public Provisions(int id, string name, int value, string description, int experiencePoints)
             : base(id, name, description, experiencePoints)
         {
-            Value = Value;
+            Value = value;
         }
+
         public override string InformationString()
         {
             return $"{Name}: {Description}. Value: {Value}";
         }
     }
+        
 }

@@ -21,7 +21,8 @@ namespace MidwayBattle.DataLayer
                 Country = Character.HomeCountry.USA,
                 Health = 100,
                 Lives = 3,
-                ExperiencePoints = 0,
+                ExperiencePoints = 0
+                ,
                 Inventory = new ObservableCollection<GameItem>()
                 {
                     GameItemById(10)
