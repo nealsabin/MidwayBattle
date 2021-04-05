@@ -75,5 +75,42 @@ namespace MidwayBattle.PresentationLayer
                 _gameViewModel.RemoveItemFromInventory();
             }
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SpeakToButton_Click(object sender, RoutedEventArgs e)
+        {
+            if(LocationNpcDataGrid.SelectedItem != null)
+            {
+                _gameViewModel.OnPlayerTalkTo();
+            }
+        }
+
+        private void AttackButton_Click(object sender, RoutedEventArgs e)
+        {
+            if(LocationNpcDataGrid.SelectedItem != null)
+            {
+                _gameViewModel.OnPlayerAttack();
+            }
+        }
+
+        private void DefendButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (LocationNpcDataGrid.SelectedItem != null)
+            {
+                _gameViewModel.OnPlayerDefend();
+            }
+        }
+
+        private void RetreatButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (LocationNpcDataGrid.SelectedItem != null)
+            {
+                _gameViewModel.OnPlayerRetreat();
+            }
+        }
     }
 }

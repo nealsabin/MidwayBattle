@@ -7,6 +7,7 @@ using MidwayBattle.Models;
 using MidwayBattle;
 using System.Windows.Threading;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace MidwayBattle.PresentationLayer
 {
@@ -35,6 +36,9 @@ namespace MidwayBattle.PresentationLayer
         private string _currentLocationInformation;
 
         private GameItem _currentGameItem;
+        private Npc _currentNpc;
+
+        private Random random = new Random();
 
         #endregion
 
@@ -143,6 +147,10 @@ namespace MidwayBattle.PresentationLayer
             {
                 _currentGameItem = value;
                 OnPropertyChanged(nameof(CurrentGameItem));
+                //if(_currentGameItem != null && _currentGameItem is Weapon)
+                //{
+                //    _player.CurrentWeapon = _currentGameItem.GameItem as Weapon;
+                //}
             }
         }
 
@@ -413,7 +421,15 @@ namespace MidwayBattle.PresentationLayer
             }
         }
 
-        #region GAME TIME METHODS
+        public Npc CurrentNpc
+        {
+            get { return _currentNpc; }
+            set
+            {
+                _currentNpc = value;
+                OnPropertyChanged(nameof(CurrentNpc));
+            }
+        }
 
         #region Actions
         public void AddItemToInventory()
@@ -446,9 +462,9 @@ namespace MidwayBattle.PresentationLayer
         {
             switch (_currentGameItem)
             {
-                case Weapon weapon:
-                    ProcessWeaponUse(weapon);
-                    break;
+                //case Weapon weapon:
+                //    ProcessWeaponUse(weapon);
+                //    break;
                 case Provisions provisions:
                     ProcessProvisionsUse(provisions);
                     break;
@@ -463,22 +479,24 @@ namespace MidwayBattle.PresentationLayer
             OnPropertyChanged(nameof(Player));
         }
 
-        private void ProcessWeaponUse(Weapon weapon)
-        {
-            _enemy.Health -= weapon.Damage;
-            OnPropertyChanged(nameof(Enemy));
-            CheckEnemyHealth(Enemy);
-        }
+        ////to delete
+        //private void ProcessWeaponUse(Weapon weapon)
+        //{
+        //    _enemy.Health -= weapon.Damage;
+        //    OnPropertyChanged(nameof(Enemy));
+        //    CheckEnemyHealth(Enemy);
+        //}
 
-        private void CheckEnemyHealth(Enemy enemy)
-        {
-            if(_enemy.Health <= 0)
-            {
-                _enemy.Lives -= 1;
-                _enemy.Health = 100;
-                OnPropertyChanged(nameof(Enemy));
-            }
-        } 
+        ////to delete
+        //private void CheckEnemyHealth(Enemy enemy)
+        //{
+        //    if(_enemy.Health <= 0)
+        //    {
+        //        _enemy.Lives -= 1;
+        //        _enemy.Health = 100;
+        //        OnPropertyChanged(nameof(Enemy));
+        //    }
+        //} 
 
         private void OnPlayerPickUp(GameItem gameItem)
         {
@@ -491,9 +509,182 @@ namespace MidwayBattle.PresentationLayer
             _player.ExperiencePoints -= gameItem.ExperiencePoints;
             OnPropertyChanged(nameof(Player));
         }
-        #endregion
+
+        private void OnPlayerDies(string message)
+        {
+            string messagetext = message +
+                "\n\nWould you like to play again?";
+
+            string titleText = "Death";
+            MessageBoxButton button = MessageBoxButton.YesNo;
+            MessageBoxResult result = MessageBox.Show(messagetext, titleText, button);
+
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    ResetPlayer();
+                    break;
+                case MessageBoxResult.No:
+                    QuiteApplication();
+                    break;
+            }
+        }
+
+        public void OnPlayerTalkTo()
+        {
+            if(CurrentNpc != null && CurrentNpc is ISpeak)
+            {
+                ISpeak speakingNpc = CurrentNpc as ISpeak;
+                CurrentLocationInformation = speakingNpc.Speak();
+            }
+        }
+        public void OnPlayerAttack()
+        {
+            _player.BattleMode = BattleModeName.ATTACK;
+            Battle();
+        }
+        public void OnPlayerDefend()
+        {
+            _player.BattleMode = BattleModeName.DEFEND;
+            Battle();
+        }
+        public void OnPlayerRetreat()
+        {
+            _player.BattleMode = BattleModeName.RETREAT;
+            Battle();
+        }
+        private void QuiteApplication()
+        {
+            Environment.Exit(0);
+        }
+
+        /// <summary>
+        /// player chooses to reset game
+        /// </summary>
+        private void ResetPlayer()
+        {
+            Environment.Exit(0);
+        }
 
         #endregion
+
+        #region Battle
+        private void Battle()
+        {
+            if(_currentNpc is IBattle)
+            {
+                IBattle battleNpc = _currentNpc as IBattle;
+                int playerHitPoints = 0;
+                int battleNpcHitPoints = 0;
+                string battleInformation = "";
+
+                if(_player.CurrentWeapon != null)
+                {
+                    playerHitPoints = CalculatePlayerHitPoints();
+                }
+                else
+                {
+                    battleInformation = "You have no weapon." + Environment.NewLine;
+                }
+
+                if(battleNpc.CurrentWeapon != null)
+                {
+                    battleNpcHitPoints = CalculateNpcHitPoints(battleNpc);
+                }
+                else
+                {
+                    battleInformation = $"Entering into battle with {_currentNpc.Name} who is not a war ship.";
+                }
+
+                //
+                // build out the text for the current location information
+                //
+                battleInformation +=
+                    $"Player: {_player.BattleMode}     Hit Points: {playerHitPoints}" + Environment.NewLine +
+                    $"NPC: {battleNpc.BattleMode}     Hit Points: {battleNpcHitPoints}" + Environment.NewLine;
+
+                //battle results
+                if(playerHitPoints >= battleNpcHitPoints)
+                {
+                    battleInformation += $"You have destroyed {_currentNpc.Name}.";
+                    _currentLocation.Npcs.Remove(_currentNpc);
+                }
+                else
+                {
+                    battleInformation += $"You have been destroyed by {_currentNpc.Name}.";
+                }
+
+                CurrentLocationInformation = battleInformation;
+                if (_player.Lives <= 0) OnPlayerDies("Your ship has been completely destroyed.");
+            }
+            else
+            {
+                CurrentLocationInformation = "The current ship is not prepared for battle.";
+                _player.ExperiencePoints -= 5;
+            }
+        }
+
+        private int CalculatePlayerHitPoints()
+        {
+            int playerHitPoints = 0;
+            switch (_player.BattleMode)
+            {
+                case BattleModeName.ATTACK:
+                    playerHitPoints = _player.Attack();
+                    break;
+                case BattleModeName.DEFEND:
+                    playerHitPoints = _player.Defend();
+                    break;
+                case BattleModeName.RETREAT:
+                    playerHitPoints = _player.Retreat();
+                    break;
+            }
+            return playerHitPoints;
+        }
+
+        private int CalculateNpcHitPoints(IBattle battleNpc)
+        {
+            int battleNpcHitPoints = 0;
+
+            switch (NpcBattleResponse())
+            {
+                case BattleModeName.ATTACK:
+                    battleNpcHitPoints = battleNpc.Attack();
+                    break;
+                case BattleModeName.DEFEND:
+                    battleNpcHitPoints = battleNpc.Defend();
+                    break;
+                case BattleModeName.RETREAT:
+                    battleNpcHitPoints = battleNpc.Retreat();
+                    break;
+            }
+            return battleNpcHitPoints;
+        }
+
+        private BattleModeName NpcBattleResponse()
+        {
+            BattleModeName npcBattleResponse = BattleModeName.RETREAT;
+
+            switch (DieRoll(3))
+            {
+                case 1:
+                    npcBattleResponse = BattleModeName.ATTACK;
+                    break;
+                case 2:
+                    npcBattleResponse = BattleModeName.DEFEND;
+                    break;
+                case 3:
+                    npcBattleResponse = BattleModeName.RETREAT;
+                    break;
+            }
+            return npcBattleResponse;
+        }
+        #endregion
+
+        private int DieRoll(int sides)
+        {
+            return random.Next(1, sides + 1);
+        }
 
         #endregion
 

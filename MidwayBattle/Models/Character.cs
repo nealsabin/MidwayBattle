@@ -17,6 +17,8 @@ namespace MidwayBattle.Models
         protected string _name;
         protected int _age;
         protected HomeCountry _country;
+
+        protected Random random = new Random();
         #endregion
 
         #region Properties
@@ -46,7 +48,7 @@ namespace MidwayBattle.Models
         {
 
         }
-        public Character(string name, HomeCountry country)
+        public Character(int id, string name, HomeCountry country)
         {
             _name = name;
             _country = country;

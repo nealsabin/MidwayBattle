@@ -424,40 +424,91 @@
                                 Style="{StaticResource ContainerHeaderStyle}"
                                 Content="INTEL"
                                 FontSize="12"/>
-                            <DataGrid
-                                Grid.Row="1"
-                                x:Name="LocationsItemsDataGrid"
-                                Height="Auto"
-                                Width="Auto"
-                                Margin="5"
-                                ItemsSource="{Binding CurrentLocation.GameItems}"
-                                SelectedItem="{Binding CurrentGameItem}"
-                                AutoGenerateColumns="False"
-                                HeadersVisibility="Column">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn 
-                                        Header="Item Desc." 
-                                        IsReadOnly="True"
-                                        Binding="{Binding Information, Mode=OneWay}"
-                                        Width="*">
-                                        <DataGridTextColumn.ElementStyle>
-                                            <Style>
-                                                <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
-                                            </Style>
-                                        </DataGridTextColumn.ElementStyle>
-                                    </DataGridTextColumn>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                            <Button 
+                            <TabControl
+                                x:Name="LocationInfoTabControl"
+                                Width="auto"
+                                Grid.Row="1">
+                                <TabItem
+                                    x:Name="ItemsTabItem"
+                                    Header="Items">
+                                    <DataGrid
+                                        x:Name="LocationsItemsDataGrid"
+                                        Height="Auto"
+                                        Width="Auto"
+                                        Margin="5"
+                                        ItemsSource="{Binding CurrentLocation.GameItems}"
+                                        SelectedItem="{Binding CurrentGameItem}"
+                                        AutoGenerateColumns="False"
+                                        HeadersVisibility="Column">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn 
+                                                Header="Desc." 
+                                                IsReadOnly="True"
+                                                Binding="{Binding Information, Mode=OneWay}"
+                                                Width="*">  
+                                                <DataGridTextColumn.ElementStyle>
+                                                    <Style>
+                                                        <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                                    </Style>
+                                                </DataGridTextColumn.ElementStyle>
+                                            </DataGridTextColumn>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+
+                                </TabItem>
+                                <TabItem
+                                    x:Name="NpcsTabItem"
+                                    Header="NPCs">
+                                    <DataGrid
+                                        x:Name="LocationNpcDataGrid"
+                                        Height="Auto"
+                                        Width="Auto"
+                                        Margin="5"
+                                        ItemsSource="{Binding CurrentLocation.Npcs}"
+                                        SelectedItem="{Binding CurrentNpc}"
+                                        AutoGenerateColumns="False"
+                                        HeadersVisibility="Column">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn 
+                                                Header="Desc." 
+                                                IsReadOnly="True"
+                                                Binding="{Binding Information, Mode=OneWay}"
+                                                Width="*">
+                                                <DataGridTextColumn.ElementStyle>
+                                                    <Style>
+                                                        <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                                    </Style>
+                                                </DataGridTextColumn.ElementStyle>
+                                            </DataGridTextColumn>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+
+                                </TabItem>
+
+                            </TabControl>
+                            <StackPanel
                                 Grid.Row="2"
-                                Grid.Column="1"
-                                Content="Pick Up" 
-                                Background="#659BDB"
-                                Foreground="#525252"
-                                FontWeight="Bold"
-                                Width="55"
-                                Height="25"
-                                Click="PickUpButton_Click"/>
+                                Grid.Column="2"
+                                Orientation="Horizontal">
+                                <Button 
+                                    Content="Pick Up" 
+                                    Background="#659BDB"
+                                    Foreground="#525252"
+                                    FontWeight="Bold"
+                                    Width="55"
+                                    Height="25"
+                                    Click="PickUpButton_Click"/>
+                                <Button
+                                    Content="Speak To"
+                                    Background="#659BDB"
+                                    Foreground="#525252"
+                                    FontWeight="Bold"
+                                    Width="55"
+                                    Height="25"
+                                    Click="SpeakToButton_Click"
+                                    />
+                            </StackPanel>
+
                         </Grid>
                     </Border>
                     <Grid
@@ -598,7 +649,7 @@
                                         ItemsSource="{Binding Player.Weapons}"
                                         SelectedItem="{Binding CurrentGameItem}"
                                         AutoGenerateColumns="False"
-                                        HeadersVisibility="Column"> 
+                                        HeadersVisibility="Column">
                                         <DataGrid.Columns>
                                             <DataGridTextColumn Header="Name"
                                                 Binding="{Binding Name, Mode=OneWay}"
@@ -656,6 +707,47 @@
                                 FontWeight="Bold"
                                 Click="PutDownButton_Click"/>
                         </StackPanel>
+                        <StackPanel
+                                Grid.Row="2"
+                                Orientation="Vertical"
+                                Margin="5">
+                            <Button
+                                Content="Attack" 
+                                Width="75"
+                                Height="25"
+                                Background="#659BDB"
+                                Foreground="#525252"
+                                FontWeight="Bold"
+                                Click="AttackButton_Click"/>
+                            <Button
+                                Margin="0,3,0,3"
+                                Content="Defend" 
+                                Width="75"
+                                Height="25"
+                                Background="#659BDB"
+                                Foreground="#525252"
+                                FontWeight="Bold"
+                                Click="DefendButton_Click"/>
+                            <Button 
+                                Content="Retreat" 
+                                Width="75"
+                                Height="25"
+                                Background="#659BDB"
+                                Foreground="#525252"
+                                FontWeight="Bold"
+                                Click="RetreatButton_Click"/>
+                        </StackPanel>
+                        <TextBox
+                            Grid.Row="3"
+                            Height="75"
+                            Width="350"
+                            Margin="10"
+                            Background="WhiteSmoke"
+                            BorderThickness="0"
+                            TextWrapping="Wrap"
+                            Text="{Binding CurrentLocationInformation, Mode=OneWay}"
+                            VerticalScrollBarVisibility="Auto"
+                            VerticalContentAlignment="top"/>
 
                     </Grid>
                 </Grid>

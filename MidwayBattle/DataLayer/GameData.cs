@@ -34,7 +34,10 @@ namespace MidwayBattle.DataLayer
             return StandardGameItems().FirstOrDefault(i => i.Id == id);
         }
 
-
+        private static Npc NpcById(int id)
+        {
+            return Npcs().FirstOrDefault(i => i.Id == id);
+        }
 
         public static Enemy EnemyData()
         {
@@ -78,6 +81,11 @@ namespace MidwayBattle.DataLayer
                 GameItems = new ObservableCollection<GameItem>()
                 {
                     GameItemById(20)
+                },
+                Npcs = new ObservableCollection<Npc>()
+                {
+                    NpcById(3001),
+                    NpcById(4001),
                 }
             };
             gameMap.MapLocations[0, 1] = new Location()
@@ -100,6 +108,10 @@ namespace MidwayBattle.DataLayer
                 GameItems = new ObservableCollection<GameItem>()
                 {
                     GameItemById(11)
+                },
+                Npcs = new ObservableCollection<Npc>()
+                {
+                    NpcById(3002)
                 }
             };
             gameMap.MapLocations[1, 1] = new Location()
@@ -114,6 +126,10 @@ namespace MidwayBattle.DataLayer
                 {
                     GameItemById(10),
                     GameItemById(21)
+                },
+                Npcs = new ObservableCollection<Npc>()
+                {
+                    NpcById(4002)
                 }
             };
             return gameMap;
@@ -127,6 +143,60 @@ namespace MidwayBattle.DataLayer
                 new Weapon(12, "TEST",25,"TEST",50),
                 new Provisions(20, "Fuel", 20, "20 barrels of fuel", 5),
                 new Provisions(21, "Ship Repair Kit",10,"Use this kit to repair your ship if your ship is damaged",5)
+            };
+        }
+        public static List<Npc> Npcs()
+        {
+            return new List<Npc>()
+            {
+                new Enemy()
+                {
+                    Id = 3001,
+                    Name = "Aircraft Carrier",
+                    Country = Character.HomeCountry.Japan,
+                    Description = "Largest aircraft carrier in the Japanese fleet. Engage with caution.",
+                    Messages = new List<string>()
+                    {
+                        "You will be destroyed.",
+                        "Prepare for battle"
+                    },
+                    CurrentWeapon = GameItemById(10) as Weapon
+                },
+                new Enemy()
+                {
+                    Id = 3002,
+                    Name = "Destroyer",
+                    Country = Character.HomeCountry.Japan,
+                    Description = "Japanese destroyer with impressive armament.",
+                    Messages = new List<string>()
+                    {
+                        "You are out gunned, you don't stand a chance.",
+                        "The end is near."
+                    },
+                    CurrentWeapon = GameItemById(11) as Weapon
+                },
+                new Citizen()
+                {
+                    Id = 4001,
+                    Name = "Endurance",
+                    Country = Character.HomeCountry.USA,
+                    Description = "American cargo ship containing provisions.",
+                    Messages = new List<string>()
+                    {
+                        "This ship is American. DO NOT FIRE."
+                    }
+                },
+                new Citizen()
+                {
+                    Id = 4002,
+                    Name = "Wasen",
+                    Country = Character.HomeCountry.Japan,
+                    Description = "Japanese cargo ship containing provisions.",
+                    Messages = new List<string>()
+                    {
+                        "Thi is not a war ship. DO NOT FIRE."
+                    }
+                }
             };
         }
     }

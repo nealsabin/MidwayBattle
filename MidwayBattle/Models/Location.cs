@@ -17,6 +17,7 @@ namespace MidwayBattle.Models
         private int _modifyExperiencePoints;
         private string _message;
         private ObservableCollection<GameItem> _gameItems;
+        private ObservableCollection<Npc> _npcs;
 
         public string Name
         {
@@ -52,6 +53,11 @@ namespace MidwayBattle.Models
         {
             get { return _gameItems; }
             set { _gameItems = value; }
+        }
+        public ObservableCollection<Npc> Npcs
+        {
+            get { return _npcs; }
+            set { _npcs = value; }
         }
         public Location()
         {

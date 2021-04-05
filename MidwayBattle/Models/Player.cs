@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 
 namespace MidwayBattle.Models
 {
-    public class Player : Character
+    public class Player : Character, IBattle
     {
         #region Enums
         public enum PositionTitle { Captain, Commander, LieutenantCommander}
@@ -17,6 +17,8 @@ namespace MidwayBattle.Models
         private int _lives;
         private int _health;
         private int _experiencePoints;
+        private Weapon _currentWeapon;
+        private BattleModeName _battleMode;
         private PositionTitle _title;
         private List<Location> _locationsVisited;
         private ObservableCollection<GameItem> _inventory;
@@ -40,6 +42,16 @@ namespace MidwayBattle.Models
         {
             get { return _experiencePoints; }
             set { _experiencePoints = value; }
+        }
+        public Weapon CurrentWeapon
+        {
+            get { return _currentWeapon; }
+            set { _currentWeapon = value; }
+        }
+        public BattleModeName BattleMode
+        {
+            get { return _battleMode; }
+            set { _battleMode = value; }
         }
         public PositionTitle Title
         {
@@ -115,6 +127,50 @@ namespace MidwayBattle.Models
             if (selectedGameItem != null)
             {
                 _inventory.Remove(selectedGameItem);
+            }
+        }
+
+        public int Attack()
+        {
+            int hitPoints = CurrentWeapon.Damage;
+
+            if(hitPoints <= 100)
+            {
+                return hitPoints;
+            }
+            else
+            {
+                return 100;
+            }
+        }
+        public int Defend()
+        {
+            int hitPoints = CurrentWeapon.Damage;
+
+            if(hitPoints >= 0 && hitPoints <= 100)
+            {
+                return hitPoints;
+            }
+            else if(hitPoints > 100)
+            {
+                return 100;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+        public int Retreat()
+        {
+            int hitPoints = 10;
+
+            if(hitPoints <= 100)
+            {
+                return hitPoints;
+            }
+            else
+            {
+                return 100;
             }
         }
 
