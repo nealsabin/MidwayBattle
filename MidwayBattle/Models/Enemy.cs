@@ -11,24 +11,24 @@ namespace MidwayBattle.Models
     {
         Random r = new Random();
 
-        private int _lives;
-        private int _health;
+        //private int _lives;
+        //private int _health;
 
         public List<string> Messages { get; set; }
         public BattleModeName BattleMode {get; set;}
         public Weapon CurrentWeapons { get; set; }
         public Weapon CurrentWeapon { get; set; }
 
-        public int Lives
-        {
-            get { return _lives; }
-            set { _lives = value; }
-        }
-        public int Health
-        {
-            get { return _health; }
-            set { _health = value; }
-        }
+        //public int Lives
+        //{
+        //    get { return _lives; }
+        //    set { _lives = value; }
+        //}
+        //public int Health
+        //{
+        //    get { return _health; }
+        //    set { _health = value; }
+        //}
 
         protected override string InformationText()
         {
@@ -45,10 +45,12 @@ namespace MidwayBattle.Models
             string name,
             HomeCountry country,
             string description,
+            int health,
+            int lives,
             List<string> messages,
             Weapon currentWeapons,
             Weapon currentWeapon)
-            : base(id, name, country, description)
+            : base(id, name, country, description, health, lives)
         {
             Messages = messages;
             CurrentWeapon = currentWeapon;

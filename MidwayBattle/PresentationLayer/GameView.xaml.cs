@@ -112,5 +112,10 @@ namespace MidwayBattle.PresentationLayer
                 _gameViewModel.OnPlayerRetreat();
             }
         }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }

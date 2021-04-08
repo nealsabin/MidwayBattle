@@ -26,13 +26,15 @@ namespace MidwayBattle.Models
 
         }
 
-        public Npc(int id, string name, HomeCountry country, string description)
+        public Npc(int id, string name, HomeCountry country, string description, int health, int lives)
             : base(id, name, country)
         {
             Id = id;
             Name = name;
             Country = country;
             Description = description;
+            Health = health;
+            Lives = lives;
         }
 
         protected abstract string InformationText();

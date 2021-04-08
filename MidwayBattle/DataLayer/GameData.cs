@@ -80,11 +80,12 @@ namespace MidwayBattle.DataLayer
                 ModifyExperiencePoints = 5,
                 GameItems = new ObservableCollection<GameItem>()
                 {
+                    GameItemById(10),
                     GameItemById(20)
                 },
                 Npcs = new ObservableCollection<Npc>()
                 {
-                    NpcById(3001),
+                    NpcById(3003),
                     NpcById(4001),
                 }
             };
@@ -95,7 +96,11 @@ namespace MidwayBattle.DataLayer
                 Description = "This is a description for the Northeast Quadrant.",
                 Accessible = true,
                 Message = "Be advised, enemy planes have been in this quadrant.",
-                ModifyExperiencePoints = 5
+                ModifyExperiencePoints = 5,
+                GameItems = new ObservableCollection<GameItem>()
+                {
+                    GameItemById(12)
+                },
             };
             gameMap.MapLocations[1, 0] = new Location()
             {
@@ -107,7 +112,8 @@ namespace MidwayBattle.DataLayer
                 ModifyExperiencePoints = 10,
                 GameItems = new ObservableCollection<GameItem>()
                 {
-                    GameItemById(11)
+                    GameItemById(11),
+                    GameItemById(21)
                 },
                 Npcs = new ObservableCollection<Npc>()
                 {
@@ -124,11 +130,11 @@ namespace MidwayBattle.DataLayer
                 ModifyExperiencePoints = 5,
                 GameItems = new ObservableCollection<GameItem>()
                 {
-                    GameItemById(10),
-                    GameItemById(21)
+                    GameItemById(22)
                 },
                 Npcs = new ObservableCollection<Npc>()
                 {
+                    NpcById(3001),
                     NpcById(4002)
                 }
             };
@@ -138,11 +144,12 @@ namespace MidwayBattle.DataLayer
         {
             return new List<GameItem>()
             {
-                new Weapon(10, "16 inch shell", 40, "Main armament of the battleship",15),
-                new Weapon(11, "5 inch shell", 15, "Secondary armament of the battleship",5),
-                new Weapon(12, "TEST",25,"TEST",50),
-                new Provisions(20, "Fuel", 20, "20 barrels of fuel", 5),
-                new Provisions(21, "Ship Repair Kit",10,"Use this kit to repair your ship if your ship is damaged",5)
+                new Weapon(10, "16 inch shell", 30, "Main armament of the battleship",15, 1),
+                new Weapon(11, "5 inch shell", 15, "Secondary armament of the battleship",5, 1),
+                new Weapon(12, "Mark 14 torpedo",40,"The standard United States Navy torpedo.",20, 1),
+                new Provisions(20, "Fuel","20 barrels of fuel", 5, 20),
+                new Provisions(21, "Ship Repair Kit","Use this kit to repair your ship if your ship is damaged",5, 10),
+                new Provisions(22, "Crew member resupply", "Transport with additional crew. Use of item gives one additional life.", 15, 1),
             };
         }
         public static List<Npc> Npcs()
@@ -160,6 +167,8 @@ namespace MidwayBattle.DataLayer
                         "You will be destroyed.",
                         "Prepare for battle"
                     },
+                    Health = 100,
+                    Lives = 3,
                     CurrentWeapon = GameItemById(10) as Weapon
                 },
                 new Enemy()
@@ -173,6 +182,23 @@ namespace MidwayBattle.DataLayer
                         "You are out gunned, you don't stand a chance.",
                         "The end is near."
                     },
+                    Health = 100,
+                    Lives = 3,
+                    CurrentWeapon = GameItemById(11) as Weapon
+                },
+                new Enemy()
+                {
+                    Id = 3003,
+                    Name = "Submarine",
+                    Country = Character.HomeCountry.Japan,
+                    Description = "Japanese I-400 class submarine with nuclear ballistic missiles.",
+                    Messages = new List<string>()
+                    {
+                        "This is the largest submarine in the world, you don't stand a chance.",
+                        "The end is near."
+                    },
+                    Health = 100,
+                    Lives = 3,
                     CurrentWeapon = GameItemById(11) as Weapon
                 },
                 new Citizen()
@@ -181,6 +207,8 @@ namespace MidwayBattle.DataLayer
                     Name = "Endurance",
                     Country = Character.HomeCountry.USA,
                     Description = "American cargo ship containing provisions.",
+                    Health = 100,
+                    Lives = 3,
                     Messages = new List<string>()
                     {
                         "This ship is American. DO NOT FIRE."
@@ -192,9 +220,11 @@ namespace MidwayBattle.DataLayer
                     Name = "Wasen",
                     Country = Character.HomeCountry.Japan,
                     Description = "Japanese cargo ship containing provisions.",
+                    Health = 100,
+                    Lives = 3,
                     Messages = new List<string>()
                     {
-                        "Thi is not a war ship. DO NOT FIRE."
+                        "This is not a war ship. DO NOT FIRE."
                     }
                 }
             };

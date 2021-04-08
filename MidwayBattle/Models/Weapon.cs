@@ -10,8 +10,8 @@ namespace MidwayBattle.Models
     {
         public int Damage { get; set; }
 
-        public Weapon(int id, string name, int damage, string description, int experiencePoints)
-            : base(id, name, description, experiencePoints)
+        public Weapon(int id, string name, int damage, string description, int experiencePoints, int value)
+            : base(id, name, description, experiencePoints, value)
         {
             Damage = damage;
         }

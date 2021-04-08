@@ -22,8 +22,15 @@ namespace MidwayBattle.Models
 
         }
 
-        public Citizen(int id, string name, HomeCountry country, string description, List<string> messages)
-            : base(id, name, country, description)
+        public Citizen(
+            int id, 
+            string name, 
+            HomeCountry country, 
+            string description,
+            int health,
+            int lives,
+            List<string> messages)
+            : base(id, name, country, description, health, lives)
         {
             Messages = messages;
         }

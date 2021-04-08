@@ -147,10 +147,10 @@ namespace MidwayBattle.PresentationLayer
             {
                 _currentGameItem = value;
                 OnPropertyChanged(nameof(CurrentGameItem));
-                //if(_currentGameItem != null && _currentGameItem is Weapon)
-                //{
-                //    _player.CurrentWeapon = _currentGameItem.GameItem as Weapon;
-                //}
+                if (_currentGameItem != null && _currentGameItem is Weapon)
+                {
+                    _player.CurrentWeapon = _currentGameItem as Weapon;
+                }
             }
         }
 
@@ -475,8 +475,26 @@ namespace MidwayBattle.PresentationLayer
 
         private void ProcessProvisionsUse(Provisions provisions)
         {
-            _player.Health += provisions.Value;
+            if (provisions.Id == 22 && _player.Lives < 3)
+            {
+                _player.Lives += provisions.Value;
+                _player.ExperiencePoints += provisions.ExperiencePoints;
+            }
+            else if(provisions.Id != 22 && _player.Health < 100)
+            {
+                _player.ExperiencePoints += provisions.ExperiencePoints;
+                _player.Health += provisions.Value;
+                if (_player.Health > 100)
+                {
+                    _player.Health = 100;
+                }
+            }
+            else
+            {
+
+            }
             OnPropertyChanged(nameof(Player));
+            OnPropertyChanged(nameof(GameItem));
         }
 
         ////to delete
@@ -487,16 +505,16 @@ namespace MidwayBattle.PresentationLayer
         //    CheckEnemyHealth(Enemy);
         //}
 
-        ////to delete
-        //private void CheckEnemyHealth(Enemy enemy)
+        //to delete
+        //private void CheckEnemyHealth(Npc CurrentNpc)
         //{
-        //    if(_enemy.Health <= 0)
+        //    if (_currentNpc.Health <= 0)
         //    {
-        //        _enemy.Lives -= 1;
-        //        _enemy.Health = 100;
-        //        OnPropertyChanged(nameof(Enemy));
+        //        _currentNpc.Lives -= 1;
+        //        _currentNpc.Health = 100;
+        //        OnPropertyChanged(nameof(CurrentNpc));
         //    }
-        //} 
+        //}
 
         private void OnPlayerPickUp(GameItem gameItem)
         {
@@ -569,6 +587,7 @@ namespace MidwayBattle.PresentationLayer
         #endregion
 
         #region Battle
+
         private void Battle()
         {
             if(_currentNpc is IBattle)
@@ -581,6 +600,8 @@ namespace MidwayBattle.PresentationLayer
                 if(_player.CurrentWeapon != null)
                 {
                     playerHitPoints = CalculatePlayerHitPoints();
+                    _currentNpc.Health -= _player.CurrentWeapon.Damage;
+                    OnPropertyChanged(nameof(CurrentNpc));
                 }
                 else
                 {
@@ -590,6 +611,8 @@ namespace MidwayBattle.PresentationLayer
                 if(battleNpc.CurrentWeapon != null)
                 {
                     battleNpcHitPoints = CalculateNpcHitPoints(battleNpc);
+                    _player.Health -= battleNpcHitPoints;
+                    OnPropertyChanged(nameof(Player));
                 }
                 else
                 {
@@ -604,18 +627,52 @@ namespace MidwayBattle.PresentationLayer
                     $"NPC: {battleNpc.BattleMode}     Hit Points: {battleNpcHitPoints}" + Environment.NewLine;
 
                 //battle results
-                if(playerHitPoints >= battleNpcHitPoints)
+
+                //CheckEnemyHealth(CurrentNpc);
+
+                //Check NPC health
+                if(_currentNpc.Health <= 0)
+                {
+                    _currentNpc.Lives -= 1;
+                    _currentNpc.Health = 100;
+                    battleInformation += $"{_currentNpc.Name} has lost a life.";
+                    OnPropertyChanged(nameof(CurrentNpc));
+                }
+
+                //Check NPC lives
+                if(_currentNpc.Lives == 0)
                 {
                     battleInformation += $"You have destroyed {_currentNpc.Name}.";
                     _currentLocation.Npcs.Remove(_currentNpc);
                 }
-                else
+
+                if(_player.Health <= 0)
                 {
-                    battleInformation += $"You have been destroyed by {_currentNpc.Name}.";
+                    _player.Lives -= 1;
+                    _player.Health = 100;
+                    battleInformation += $"You have lost a life.";
+                    OnPropertyChanged(nameof(Player));
                 }
 
                 CurrentLocationInformation = battleInformation;
                 if (_player.Lives <= 0) OnPlayerDies("Your ship has been completely destroyed.");
+                //else
+                //{
+                //    battleInformation += $"You have been destroyed by {_currentNpc.Name}.";
+                //}
+
+                //if (playerHitPoints >= battleNpcHitPoints)
+                //{
+                //    battleInformation += $"You have destroyed {_currentNpc.Name}.";
+                //    _currentNpc.Lives -= 1;
+                //    //_currentLocation.Npcs.Remove(_currentNpc);
+                //}
+                //else
+                //{
+                //    battleInformation += $"You have been destroyed by {_currentNpc.Name}.";
+                //}
+
+
             }
             else
             {

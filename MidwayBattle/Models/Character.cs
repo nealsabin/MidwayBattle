@@ -17,6 +17,8 @@ namespace MidwayBattle.Models
         protected string _name;
         protected int _age;
         protected HomeCountry _country;
+        private int _lives;
+        private int _health;
 
         protected Random random = new Random();
         #endregion
@@ -41,6 +43,16 @@ namespace MidwayBattle.Models
         {
             get { return _country; }
             set { _country = value; }
+        }
+        public int Lives
+        {
+            get { return _lives; }
+            set { _lives = value; }
+        }
+        public int Health
+        {
+            get { return _health; }
+            set { _health = value; }
         }
         #endregion
 

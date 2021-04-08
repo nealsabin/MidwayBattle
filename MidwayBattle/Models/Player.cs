@@ -14,8 +14,8 @@ namespace MidwayBattle.Models
         #endregion
 
         #region Fields
-        private int _lives;
-        private int _health;
+        //private int _lives;
+        //private int _health;
         private int _experiencePoints;
         private Weapon _currentWeapon;
         private BattleModeName _battleMode;
@@ -28,16 +28,16 @@ namespace MidwayBattle.Models
 
 
         #region Properties
-        public int Lives
-        {
-            get { return _lives; }
-            set { _lives = value; }
-        }
-        public int Health
-        {
-            get { return _health; }
-            set { _health = value; }
-        }
+        //public int Lives
+        //{
+        //    get { return _lives; }
+        //    set { _lives = value; }
+        //}
+        //public int Health
+        //{
+        //    get { return _health; }
+        //    set { _health = value; }
+        //}
         public int ExperiencePoints
         {
             get { return _experiencePoints; }
@@ -83,6 +83,7 @@ namespace MidwayBattle.Models
         public Player()
         {
             _locationsVisited = new List<Location>();
+            _inventory = new ObservableCollection<GameItem>();
             _weapons = new ObservableCollection<GameItem>();
             _provisions = new ObservableCollection<GameItem>();
         }
@@ -145,7 +146,7 @@ namespace MidwayBattle.Models
         }
         public int Defend()
         {
-            int hitPoints = CurrentWeapon.Damage;
+            int hitPoints = CurrentWeapon.Damage - 5;
 
             if(hitPoints >= 0 && hitPoints <= 100)
             {
@@ -162,7 +163,7 @@ namespace MidwayBattle.Models
         }
         public int Retreat()
         {
-            int hitPoints = 10;
+            int hitPoints = CurrentWeapon.Damage - 10;
 
             if(hitPoints <= 100)
             {

@@ -13,6 +13,7 @@ namespace MidwayBattle.Models
         public string Description { get; set; }
         public int ExperiencePoints { get; set; }
         public string UseMessage { get; set; }
+        public int Value { get; set; }
 
         public string Information
         {
@@ -21,13 +22,14 @@ namespace MidwayBattle.Models
                 return InformationString();
             }
         }
-        public GameItem(int id, string name, string description, int experiencePoints, string useMessage = "")
+        public GameItem(int id, string name, string description, int experiencePoints,int value, string useMessage = "")
         {
             Id = id;
             Name = name;
             Description = description;
             ExperiencePoints = experiencePoints;
             UseMessage = useMessage;
+            Value = value;
         }
 
 

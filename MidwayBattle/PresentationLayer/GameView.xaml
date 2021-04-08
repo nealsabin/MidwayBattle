@@ -62,6 +62,7 @@
             <Setter Property="Width" Value="40"/>
             <Setter Property="Height" Value="20"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
@@ -339,8 +340,8 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1.1*"/>
-                        <RowDefinition Height="1.2*"/>
-                        <RowDefinition Height="1.25*"/>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <Grid
                         Grid.Row="0">
@@ -417,7 +418,7 @@
                             Grid.Row="1">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="30"/>
-                                <RowDefinition Height="3*"/>
+                                <RowDefinition Height="2.5*"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <Label
@@ -445,7 +446,7 @@
                                                 Header="Desc." 
                                                 IsReadOnly="True"
                                                 Binding="{Binding Information, Mode=OneWay}"
-                                                Width="*">  
+                                                Width="*">
                                                 <DataGridTextColumn.ElementStyle>
                                                     <Style>
                                                         <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
@@ -454,7 +455,6 @@
                                             </DataGridTextColumn>
                                         </DataGrid.Columns>
                                     </DataGrid>
-
                                 </TabItem>
                                 <TabItem
                                     x:Name="NpcsTabItem"
@@ -482,33 +482,55 @@
                                             </DataGridTextColumn>
                                         </DataGrid.Columns>
                                     </DataGrid>
-
                                 </TabItem>
-
                             </TabControl>
                             <StackPanel
                                 Grid.Row="2"
                                 Grid.Column="2"
-                                Orientation="Horizontal">
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Top"
+                                Margin="0 5 0 0">
                                 <Button 
+                                    Style="{StaticResource TopBannerButtonStyle}"
                                     Content="Pick Up" 
-                                    Background="#659BDB"
-                                    Foreground="#525252"
-                                    FontWeight="Bold"
-                                    Width="55"
-                                    Height="25"
+                                    Width="auto"
+                                    Margin="0 0 6 0"
                                     Click="PickUpButton_Click"/>
                                 <Button
+                                    Style="{StaticResource TopBannerButtonStyle}"
+                                    Background="#75a76e"
                                     Content="Speak To"
-                                    Background="#659BDB"
-                                    Foreground="#525252"
-                                    FontWeight="Bold"
-                                    Width="55"
-                                    Height="25"
-                                    Click="SpeakToButton_Click"
-                                    />
+                                    Width="auto"
+                                    Margin="6 0 0 0"
+                                    Click="SpeakToButton_Click"/>
                             </StackPanel>
-
+                            <StackPanel
+                                Grid.Row="2"
+                                Orientation="Horizontal"
+                                Margin="5"
+                                VerticalAlignment="Bottom"
+                                HorizontalAlignment="Center">
+                                <Button
+                                    Content="Attack" 
+                                    Style="{StaticResource TopBannerButtonStyle}"
+                                    Background="#F44721"
+                                    Width="auto"
+                                    Margin="0 0 6 0"
+                                    Click="AttackButton_Click"/>
+                                <Button
+                                    Content="Defend" 
+                                    Style="{StaticResource TopBannerButtonStyle}"
+                                    Background="#DADADA"
+                                    Width="auto"
+                                    Click="DefendButton_Click"/>
+                                <Button 
+                                    Content="Retreat" 
+                                    Style="{StaticResource TopBannerButtonStyle}"
+                                    Width="auto"
+                                    Margin="6 0 0 0"
+                                    Click="RetreatButton_Click"/>
+                            </StackPanel>
                         </Grid>
                     </Border>
                     <Grid
@@ -520,19 +542,31 @@
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30"/>
-                                    <RowDefinition Height="1.5*"/>
-                                    <RowDefinition Height="30"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                <Label
-                                    Grid.Row="0"
-                                    Grid.Column="1"
-                                    Style="{StaticResource ContainerHeaderStyle}"
-                                    Content="SHIP INTEGRITY"
-                                    FontSize="12"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        Style="{StaticResource ContainerHeaderStyle}"
+                                        Content="SHIP INTEGRITY"
+                                        FontSize="12"/>
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        Style="{StaticResource ContainerHeaderStyle}"
+                                        Content="ENEMY SHIP"
+                                        FontSize="12"
+                                        BorderBrush="#F44721"/>
+                                </Grid>
                                 <Grid
                                     Grid.Row="1">
                                     <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
@@ -566,51 +600,32 @@
                                         Grid.Row="2"
                                         Grid.Column="0"
                                         Style="{StaticResource SubContainerLabelStyle}"
-                                        Content="Experience"/>
+                                        Content="Exp."/>
                                     <TextBox 
                                         Grid.Row="2"
                                         Grid.Column="1"
                                         Style="{StaticResource SubContainerTextBoxStyle}"
                                         Text="{Binding Player.ExperiencePoints}"/>
-                                </Grid>
-                                <Label
-                                    Grid.Row="2"
-                                    Grid.Column="1"
-                                    Style="{StaticResource ContainerHeaderStyle}"
-                                    Content="ENEMY SHIP"
-                                    FontSize="12"
-                                    BorderBrush="#F44721"/>
-                                <Grid
-                                    Grid.Row="3">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*"/>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
                                     <Label
                                         Grid.Row="0"
-                                        Grid.Column="0"
+                                        Grid.Column="2"
                                         Style="{StaticResource SubContainerLabelStyle}"
                                         Content="Health"/>
                                     <TextBox 
                                         Grid.Row="0"
-                                        Grid.Column="1"
+                                        Grid.Column="3"
                                         Style="{StaticResource SubContainerTextBoxStyle}"
-                                        Text="{Binding Enemy.Health}"/>
+                                        Text="{Binding CurrentNpc.Health}"/>
                                     <Label
                                         Grid.Row="1"
-                                        Grid.Column="0"
+                                        Grid.Column="2"
                                         Style="{StaticResource SubContainerLabelStyle}"
                                         Content="Lives"/>
                                     <TextBox 
                                         Grid.Row="1"
-                                        Grid.Column="1"
+                                        Grid.Column="3"
                                         Style="{StaticResource SubContainerTextBoxStyle}"
-                                        Text="{Binding Enemy.Lives}"/>
+                                        Text="{Binding CurrentNpc.Lives}"/>
                                 </Grid>
                             </Grid>
                         </Border>
@@ -623,15 +638,17 @@
                 <Grid>
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="1.6*"/>
+                            <RowDefinition Height="2*"/>
+                            <RowDefinition Height="1.3*"/>
                             <RowDefinition Height="*"/>
-                            <RowDefinition Height="2.25*"/>
                         </Grid.RowDefinitions>
                         <Grid
                             Grid.Row="0">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="40"/>
                                 <RowDefinition Height="*"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
                             </Grid.RowDefinitions>
                             <Label
                                 Grid.Row="0"
@@ -679,75 +696,60 @@
                                         </DataGrid.Columns>
                                     </DataGrid>
                                 </TabItem>
-
                             </TabControl>
-
-                        </Grid>
-                        <StackPanel
-                            Grid.Row="1"
-                            Orientation="Horizontal"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Top">
-                            <Button 
-                                Content="Fire / Use" 
-                                Margin="10 0 10 0"
-                                Width="75"
-                                Height="25"
-                                Background="#F44721"
-                                Foreground="#525252"
-                                FontWeight="Bold"
-                                Click="UseButton_Click"/>
-                            <Button 
-                                Content="Put Down" 
-                                Margin="10 0 10 0"
-                                Width="75"
-                                Height="25"
-                                Background="#659BDB"
-                                Foreground="#525252"
-                                FontWeight="Bold"
-                                Click="PutDownButton_Click"/>
-                        </StackPanel>
-                        <StackPanel
+                            <StackPanel
                                 Grid.Row="2"
-                                Orientation="Vertical"
-                                Margin="5">
-                            <Button
-                                Content="Attack" 
-                                Width="75"
-                                Height="25"
-                                Background="#659BDB"
-                                Foreground="#525252"
-                                FontWeight="Bold"
-                                Click="AttackButton_Click"/>
-                            <Button
-                                Margin="0,3,0,3"
-                                Content="Defend" 
-                                Width="75"
-                                Height="25"
-                                Background="#659BDB"
-                                Foreground="#525252"
-                                FontWeight="Bold"
-                                Click="DefendButton_Click"/>
-                            <Button 
-                                Content="Retreat" 
-                                Width="75"
-                                Height="25"
-                                Background="#659BDB"
-                                Foreground="#525252"
-                                FontWeight="Bold"
-                                Click="RetreatButton_Click"/>
-                        </StackPanel>
-                        <TextBox
-                            Grid.Row="3"
-                            Height="75"
-                            Width="350"
-                            Margin="10"
-                            Background="WhiteSmoke"
-                            BorderThickness="0"
-                            TextWrapping="Wrap"
-                            Text="{Binding CurrentLocationInformation, Mode=OneWay}"
-                            VerticalScrollBarVisibility="Auto"
-                            VerticalContentAlignment="top"/>
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Center">
+                                <Label Content="Holding" Style="{StaticResource ContainerLabelStyle}"/>
+                                <TextBox Text="{Binding CurrentGameItem.Name}" Style="{StaticResource ContainerTextBoxStyle}"/>
+                            </StackPanel>
+                            <StackPanel
+                                Grid.Row="3"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Top">
+                                <Button 
+                                    Content="Use" 
+                                    Style="{StaticResource TopBannerButtonStyle}"
+                                    Background="#F44721"
+                                    Width="40"
+                                    Margin="0 8 6 0"
+                                    Click="UseButton_Click"/>
+                                <Button 
+                                    Content="Put Down" 
+                                    Style="{StaticResource TopBannerButtonStyle}"
+                                    Background="#75a76e"
+                                    Width="auto"
+                                    Margin="6 8 0  0"
+                                    Click="PutDownButton_Click"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid
+                            Grid.Row="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Label
+                                Grid.Row="0"
+                                Style="{StaticResource ContainerHeaderStyle}"
+                                Content="COMMUNICATIONS"/>
+                            <TextBox
+                                Grid.Row="1"
+                                Height="85"
+                                Width="auto"
+                                Margin="10"
+                                Background="#EBEBEB"
+                                BorderBrush="#525252"
+                                BorderThickness="1.5"
+                                TextWrapping="Wrap"
+                                Text="{Binding CurrentLocationInformation, Mode=OneWay}"
+                                VerticalScrollBarVisibility="Auto"
+                                VerticalContentAlignment="top"
+                                VerticalAlignment="Top" TextChanged="TextBox_TextChanged"/>
+                        </Grid>
 
                     </Grid>
                 </Grid>

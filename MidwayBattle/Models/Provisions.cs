@@ -8,12 +8,12 @@ namespace MidwayBattle.Models
 {
     public class Provisions : GameItem
     {
-        public int Value { get; set; }
+        //public int Value { get; set; }
 
-        public Provisions(int id, string name, int value, string description, int experiencePoints)
-            : base(id, name, description, experiencePoints)
+        public Provisions(int id, string name, string description, int experiencePoints, int value)
+            : base(id, name, description, experiencePoints, value)
         {
-            Value = value;
+            //Value = value;
         }
 
         public override string InformationString()
