@@ -20,6 +20,11 @@ namespace MidwayBattle.PresentationLayer
 
         #endregion
 
+        #region CONSTANTS
+        const string TAB = "\t";
+        const string NEW_LINE = "\n";
+        #endregion
+
         #region FIELDS
 
         private DateTime _gameStartTime;
@@ -385,6 +390,7 @@ namespace MidwayBattle.PresentationLayer
                 CurrentLocation = _gameMap.CurrentLocation;
                 UpdateAvailableTravelPoints();
                 OnPlayerMove();
+                _player.UpdateMissionStatus();
             }
         }
 
@@ -396,6 +402,7 @@ namespace MidwayBattle.PresentationLayer
                 CurrentLocation = _gameMap.CurrentLocation;
                 UpdateAvailableTravelPoints();
                 OnPlayerMove();
+                _player.UpdateMissionStatus();
             }
         }
 
@@ -407,6 +414,7 @@ namespace MidwayBattle.PresentationLayer
                 CurrentLocation = _gameMap.CurrentLocation;
                 UpdateAvailableTravelPoints();
                 OnPlayerMove();
+                _player.UpdateMissionStatus();
             }
         }
 
@@ -418,6 +426,7 @@ namespace MidwayBattle.PresentationLayer
                 CurrentLocation = _gameMap.CurrentLocation;
                 UpdateAvailableTravelPoints();
                 OnPlayerMove();
+                _player.UpdateMissionStatus();
             }
         }
 
@@ -429,6 +438,167 @@ namespace MidwayBattle.PresentationLayer
                 _currentNpc = value;
                 OnPropertyChanged(nameof(CurrentNpc));
             }
+        }
+
+        /// <summary>
+        /// open the Mission Status window
+        /// </summary>
+        public void OpenMissionStatusView()
+        {
+            MissionStatusView missionStatusView = new MissionStatusView(InitializeMissionStatusViewModel());
+
+            missionStatusView.Show();
+        }
+
+        /// <summary>
+        /// initialize all property values for the mission status view model
+        /// </summary>
+        /// <returns>mission status view model</returns>
+        private MissionStatusViewModel InitializeMissionStatusViewModel()
+        {
+            MissionStatusViewModel missionStatusViewModel = new MissionStatusViewModel();
+
+            missionStatusViewModel.MissionInformation = GenerateMissionStatusInformation();
+
+            missionStatusViewModel.Missions = new List<Mission>(_player.Missions);
+            foreach (Mission mission in missionStatusViewModel.Missions)
+            {
+                if (mission is MissionTravel)
+                    mission.StatusDetail = GenerateMissionTravelDetail((MissionTravel)mission);
+
+                if (mission is MissionEngage)
+                    mission.StatusDetail = GenerateMissionEngageDetail((MissionEngage)mission);
+
+                if (mission is MissionGather)
+                    mission.StatusDetail = GenerateMissionGatherDetail((MissionGather)mission);
+            }
+
+            return missionStatusViewModel;
+        }
+
+        /// <summary>
+        /// generate the mission status information text based on percentage of missions completed
+        /// </summary>
+        /// <returns>mission status information text</returns>
+        private string GenerateMissionStatusInformation()
+        {
+            string missionStatusInformation;
+
+            double totalMissions = _player.Missions.Count();
+            double missionsCompleted = _player.Missions.Where(m => m.Status == Mission.MissionStatus.Complete).Count();
+
+            int percentMissionsCompleted = (int)((missionsCompleted / totalMissions) * 100);
+            missionStatusInformation = $"Missions Complete: {percentMissionsCompleted}%" + NEW_LINE;
+
+            if (percentMissionsCompleted == 0)
+            {
+                missionStatusInformation += $"A lousy effort so far {_player.Name}. Get on it!";
+            }
+            else if (percentMissionsCompleted <= 33)
+            {
+                missionStatusInformation += "A decent start to the missions so far.";
+            }
+            else if (percentMissionsCompleted <= 66)
+            {
+                missionStatusInformation += "You are on the way to win this battle.";
+            }
+            else if (percentMissionsCompleted == 100)
+            {
+                missionStatusInformation += $"Well done {_player.Title}, you have completed all missions.";
+            }
+
+            return missionStatusInformation;
+        }
+
+        /// <summary>
+        /// generate the text for an engage mission detail
+        /// </summary>
+        /// <param name="mission">the mission</param>
+        /// <returns>mission detail text</returns>
+        private string GenerateMissionEngageDetail(MissionEngage mission)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Clear();
+
+            sb.AppendLine("All Required NPCs");
+            foreach (var location in mission.RequiredNpcs)
+            {
+                sb.AppendLine(TAB + location.Name);
+            }
+
+            if (mission.Status == Mission.MissionStatus.Incomplete)
+            {
+                sb.AppendLine("NPCs Yet to Engage");
+                foreach (var location in mission.NpcsNotCompleted(_player.NpcsEngaged))
+                {
+                    sb.AppendLine(TAB + location.Name);
+                }
+            }
+
+            sb.Remove(sb.Length - 2, 2); // remove the last two characters that generate a blank line
+
+            return sb.ToString(); ;
+        }
+
+        /// <summary>
+        /// generate the text for a travel mission detail
+        /// </summary>
+        /// <param name="mission">the mission</param>
+        /// <returns>mission detail text</returns>
+        private string GenerateMissionTravelDetail(MissionTravel mission)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Clear();
+
+            sb.AppendLine("All Required Locations");
+            foreach (var location in mission.RequiredLocations)
+            {
+                sb.AppendLine(TAB + location.Name);
+            }
+
+            if (mission.Status == Mission.MissionStatus.Incomplete)
+            {
+                sb.AppendLine("Locations Yet to Visit");
+                foreach (var location in mission.LocationsNotCompleted(_player.LocationsVisited))
+                {
+                    sb.AppendLine(TAB + location.Name);
+                }
+            }
+
+            sb.Remove(sb.Length - 2, 2); // remove the last two characters that generate a blank line
+
+            return sb.ToString(); ;
+        }
+
+        /// <summary>
+        /// generate the text for an gather mission detail
+        /// </summary>
+        /// <param name="mission">the mission</param>
+        /// <returns>mission detail text</returns>
+        private string GenerateMissionGatherDetail(MissionGather mission)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Clear();
+
+            sb.AppendLine("All Required Game Items");
+            foreach (var gameItem in mission.RequiredGameItems)
+            {
+                sb.Append(TAB + gameItem.Name);
+                //sb.AppendLine($"  ( {gameItem.Quantity} )");
+            }
+
+            if (mission.Status == Mission.MissionStatus.Incomplete)
+            {
+                sb.AppendLine("Game Items Yet to Gather (Quantity)");
+                foreach (var gameItem in mission.GameItemsNotCompleted(_player.Inventory.ToList()))
+                {
+                    sb.Append(TAB + gameItem.Name);
+                }
+            }
+
+            sb.Remove(sb.Length - 2, 2); // remove the last two characters that generate a blank line
+
+            return sb.ToString(); ;
         }
 
         #region Actions
@@ -497,35 +667,18 @@ namespace MidwayBattle.PresentationLayer
             OnPropertyChanged(nameof(GameItem));
         }
 
-        ////to delete
-        //private void ProcessWeaponUse(Weapon weapon)
-        //{
-        //    _enemy.Health -= weapon.Damage;
-        //    OnPropertyChanged(nameof(Enemy));
-        //    CheckEnemyHealth(Enemy);
-        //}
-
-        //to delete
-        //private void CheckEnemyHealth(Npc CurrentNpc)
-        //{
-        //    if (_currentNpc.Health <= 0)
-        //    {
-        //        _currentNpc.Lives -= 1;
-        //        _currentNpc.Health = 100;
-        //        OnPropertyChanged(nameof(CurrentNpc));
-        //    }
-        //}
-
         private void OnPlayerPickUp(GameItem gameItem)
         {
             _player.ExperiencePoints += gameItem.ExperiencePoints;
             OnPropertyChanged(nameof(Player));
+            _player.UpdateMissionStatus();
         }
 
         private void OnPlayerPutDown(GameItem gameItem)
         {
             _player.ExperiencePoints -= gameItem.ExperiencePoints;
             OnPropertyChanged(nameof(Player));
+            _player.UpdateMissionStatus();
         }
 
         private void OnPlayerDies(string message)
@@ -554,22 +707,33 @@ namespace MidwayBattle.PresentationLayer
             {
                 ISpeak speakingNpc = CurrentNpc as ISpeak;
                 CurrentLocationInformation = speakingNpc.Speak();
+                _player.NpcsEngaged.Add(_currentNpc);
+                _player.UpdateMissionStatus();
             }
         }
         public void OnPlayerAttack()
         {
             _player.BattleMode = BattleModeName.ATTACK;
             Battle();
+            if (_currentNpc != null)
+                _player.NpcsEngaged.Add(_currentNpc);
+            _player.UpdateMissionStatus();
         }
         public void OnPlayerDefend()
         {
             _player.BattleMode = BattleModeName.DEFEND;
             Battle();
+            if (_currentNpc != null)
+                _player.NpcsEngaged.Add(_currentNpc);
+            _player.UpdateMissionStatus();
         }
         public void OnPlayerRetreat()
         {
             _player.BattleMode = BattleModeName.RETREAT;
             Battle();
+            if (_currentNpc != null)
+                _player.NpcsEngaged.Add(_currentNpc);
+            _player.UpdateMissionStatus();
         }
         private void QuiteApplication()
         {

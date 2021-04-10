@@ -12,7 +12,7 @@ namespace MidwayBattle.BusinessLayer
     public class GameBusiness
     {
         GameViewModel _gameViewModel;
-        bool _newPlayer = true;
+        bool _newPlayer = false;
         Player _player = new Player();
         Enemy _enemy = new Enemy();
         List<string> _messages;
@@ -35,6 +35,13 @@ namespace MidwayBattle.BusinessLayer
                 _player.ExperiencePoints = 0;
                 _player.Health = 100;
                 _player.Lives = 3;
+
+                //_player.Missions = new ObservableCollection<Mission>()
+                //{
+                //    MissionById(1),
+                //    MissionById(2),
+                //    MissionById(3)
+                //};
 
                 _enemy.Health = 100;
                 _enemy.Lives = 3;
@@ -68,7 +75,7 @@ namespace MidwayBattle.BusinessLayer
 
             gameView.Show();
 
-            _playerSetupView.Close();
+            //_playerSetupView.Close();
         }
     }
 }

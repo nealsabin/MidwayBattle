@@ -157,7 +157,8 @@
             x:Name="Button_Help"
             Style="{StaticResource TopBannerButtonStyle}"
             Content="HELP"
-            Margin="0 0 55 0"/>
+            Margin="0 0 55 0"
+            Click="Button_Help_Click"/>
         <Button
             x:Name="Button_Exit"
             Style="{StaticResource TopBannerButtonStyle}"
@@ -641,6 +642,7 @@
                             <RowDefinition Height="2*"/>
                             <RowDefinition Height="1.3*"/>
                             <RowDefinition Height="*"/>
+                            <RowDefinition Height="20"/>
                         </Grid.RowDefinitions>
                         <Grid
                             Grid.Row="0">
@@ -750,6 +752,18 @@
                                 VerticalContentAlignment="top"
                                 VerticalAlignment="Top" TextChanged="TextBox_TextChanged"/>
                         </Grid>
+                        <Label
+                            Grid.Row="2"
+                            Style="{StaticResource ContainerHeaderStyle}"
+                            Content="MISSION INFO"/>
+                        <Button
+                            Grid.Row="2"
+                            Content="View Missions" 
+                            Margin="10"
+                            Width="150"
+                            HorizontalAlignment="Center"
+                            Style="{StaticResource TopBannerButtonStyle}" 
+                            Click="MissionStatus_Click"/>
 
                     </Grid>
                 </Grid>

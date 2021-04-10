@@ -21,9 +21,12 @@ namespace MidwayBattle.Models
         private BattleModeName _battleMode;
         private PositionTitle _title;
         private List<Location> _locationsVisited;
+        private List<Npc> _npcsEngaged;
+
         private ObservableCollection<GameItem> _inventory;
         private ObservableCollection<GameItem> _weapons;
         private ObservableCollection<GameItem> _provisions;
+        private ObservableCollection<Mission> _missions;
         #endregion
 
 
@@ -63,6 +66,11 @@ namespace MidwayBattle.Models
             get { return _locationsVisited; }
             set { _locationsVisited = value; }
         }
+        public List<Npc> NpcsEngaged
+        {
+            get { return _npcsEngaged; }
+            set { _npcsEngaged = value; }
+        }
         public ObservableCollection<GameItem> Inventory
         {
             get { return _inventory; }
@@ -78,14 +86,21 @@ namespace MidwayBattle.Models
             get { return _provisions; }
             set { _provisions = value; }
         }
+        public ObservableCollection<Mission> Missions
+        {
+            get { return _missions; }
+            set { _missions = value; }
+        }
         #endregion
 
         public Player()
         {
             _locationsVisited = new List<Location>();
+            _npcsEngaged = new List<Npc>();
             _inventory = new ObservableCollection<GameItem>();
             _weapons = new ObservableCollection<GameItem>();
             _provisions = new ObservableCollection<GameItem>();
+            _missions = new ObservableCollection<Mission>();
         }
 
         public bool HasVisited(Location location)
@@ -94,6 +109,44 @@ namespace MidwayBattle.Models
         }
 
         #region Methods
+        public void UpdateMissionStatus()
+        {
+            //
+            // Note: only loop through assigned missions and cast mission to proper child class
+            //
+            foreach (Mission mission in _missions.Where(m => m.Status == Mission.MissionStatus.Incomplete))
+            {
+                if (mission is MissionTravel)
+                {
+                    if (((MissionTravel)mission).LocationsNotCompleted(_locationsVisited).Count == 0)
+                    {
+                        mission.Status = Mission.MissionStatus.Complete;
+                        ExperiencePoints += mission.ExperiencePoints;
+                    }
+                }
+                else if (mission is MissionGather)
+                {
+                    if (((MissionGather)mission).GameItemsNotCompleted(_inventory.ToList()).Count == 0)
+                    {
+                        mission.Status = Mission.MissionStatus.Complete;
+                        ExperiencePoints += mission.ExperiencePoints;
+                    }
+                }
+                else if (mission is MissionEngage)
+                {
+                    if (((MissionEngage)mission).NpcsNotCompleted(_npcsEngaged).Count == 0)
+                    {
+                        mission.Status = Mission.MissionStatus.Complete;
+                        ExperiencePoints += mission.ExperiencePoints;
+                    }
+                }
+                else
+                {
+                    throw new Exception("Unknown Mission child class.");
+                }
+            }
+        }
+
         /// <summary>
         /// udpate game item category list
         /// </summary>

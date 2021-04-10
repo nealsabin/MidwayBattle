@@ -117,5 +117,15 @@ namespace MidwayBattle.PresentationLayer
         {
 
         }
+
+        private void MissionStatus_Click(object sender, RoutedEventArgs e)
+        {
+            _gameViewModel.OpenMissionStatusView();
+        }
+
+        private void Button_Help_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

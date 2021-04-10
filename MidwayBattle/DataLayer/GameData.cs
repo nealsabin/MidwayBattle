@@ -23,9 +23,15 @@ namespace MidwayBattle.DataLayer
                 Lives = 3,
                 ExperiencePoints = 0
                 ,
-                Inventory = new ObservableCollection<GameItem>()
+                //Inventory = new ObservableCollection<GameItem>()
+                //{
+                //    GameItemById(10)
+                //},
+                Missions = new ObservableCollection<Mission>()
                 {
-                    GameItemById(10)
+                    MissionById(1),
+                    MissionById(2),
+                    MissionById(3)
                 }
             };
         }
@@ -37,6 +43,21 @@ namespace MidwayBattle.DataLayer
         private static Npc NpcById(int id)
         {
             return Npcs().FirstOrDefault(i => i.Id == id);
+        }
+        private static Location LocationById(int id)
+        {
+            List<Location> locations = new List<Location>();
+
+            foreach (Location location in GameMap().MapLocations)
+            {
+                if (location != null) locations.Add(location);
+            }
+
+            return locations.FirstOrDefault(i => i.Id == id);
+        }
+        private static Mission MissionById(int id)
+        {
+            return Missions().FirstOrDefault(m => m.Id == id);
         }
 
         public static Enemy EnemyData()
@@ -227,6 +248,58 @@ namespace MidwayBattle.DataLayer
                         "This is not a war ship. DO NOT FIRE."
                     }
                 }
+            };
+        }
+
+        public static List<Mission> Missions()
+        {
+            return new List<Mission>()
+            {
+                new MissionTravel()
+                {
+                    Id = 1,
+                    Name = "Scout Area",
+                    Description = "Navigate to all locations within the map.",
+                    Status = Mission.MissionStatus.Incomplete,
+                    RequiredLocations = new List<Location>()
+                    {
+                        LocationById(1),
+                        LocationById(2),
+                        LocationById(3),
+                        LocationById(4)
+                    },
+                    ExperiencePoints = 20
+                },
+                new MissionGather()
+                {
+                    Id = 2,
+                    Name = "Collect All Items",
+                    Description = "Find and collect all items on map.",
+                    Status = Mission.MissionStatus.Incomplete,
+                    RequiredGameItems = new List<GameItem>()
+                    {
+                        GameItemById(10),
+                        GameItemById(11),
+                        GameItemById(12),
+                    },
+                    ExperiencePoints = 200
+                },
+                new MissionEngage()
+                {
+                    Id = 3,
+                    Name = "Speak To",
+                    Description = "Find and speak to all ships.",
+                    Status = Mission.MissionStatus.Incomplete,
+                    RequiredNpcs = new List<Npc>()
+                    {
+                        NpcById(3001),
+                        NpcById(3002),
+                        NpcById(3003),
+                        NpcById(4001),
+                        NpcById(4002)
+                    },
+                    ExperiencePoints = 500
+                },
             };
         }
     }
