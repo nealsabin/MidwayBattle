@@ -125,7 +125,8 @@ namespace MidwayBattle.PresentationLayer
 
         private void Button_Help_Click(object sender, RoutedEventArgs e)
         {
-
+            HelpView helpWindow = new HelpView();
+            helpWindow.ShowDialog();
         }
     }
 }

@@ -23,5 +23,10 @@ namespace MidwayBattle.PresentationLayer
         {
             InitializeComponent();
         }
+
+        private void Button_ExitButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }
