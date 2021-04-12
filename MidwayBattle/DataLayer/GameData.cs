@@ -282,7 +282,7 @@ namespace MidwayBattle.DataLayer
                         GameItemById(11),
                         GameItemById(12),
                     },
-                    ExperiencePoints = 200
+                    ExperiencePoints = 50
                 },
                 new MissionEngage()
                 {
@@ -298,7 +298,7 @@ namespace MidwayBattle.DataLayer
                         NpcById(4001),
                         NpcById(4002)
                     },
-                    ExperiencePoints = 500
+                    ExperiencePoints = 75
                 },
             };
         }
