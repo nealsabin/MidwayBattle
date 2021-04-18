@@ -23,10 +23,6 @@ namespace MidwayBattle.DataLayer
                 Lives = 3,
                 ExperiencePoints = 0
                 ,
-                //Inventory = new ObservableCollection<GameItem>()
-                //{
-                //    GameItemById(10)
-                //},
                 Missions = new ObservableCollection<Mission>()
                 {
                     MissionById(1),
@@ -95,7 +91,7 @@ namespace MidwayBattle.DataLayer
             {
                 Id = 1,
                 Name = "Northwest Quadrant",
-                Description = "This is a description for the Northwest Quadrant.",
+                Description = "Our radars are picking up two vessels in this quadrant, one may be friendly.",
                 Accessible = true,
                 Message = "Be advised, enemy submarines have been in this quadrant.",
                 ModifyExperiencePoints = 5,
@@ -114,7 +110,7 @@ namespace MidwayBattle.DataLayer
             {
                 Id = 2,
                 Name = "Northeast Quadrant",
-                Description = "This is a description for the Northeast Quadrant.",
+                Description = "This quadrant is eerily quiet, do not let your guard down.",
                 Accessible = true,
                 Message = "Be advised, enemy planes have been in this quadrant.",
                 ModifyExperiencePoints = 5,
@@ -127,7 +123,7 @@ namespace MidwayBattle.DataLayer
             {
                 Id = 3,
                 Name = "Southwest Quadrant",
-                Description = "This is a description for the Southwest Quadrant.",
+                Description = "This location is likely to have an enemy destroyer, be on the look out!",
                 Accessible = true,
                 Message = "Be advised, enemy battle ships have been in this quadrant.",
                 ModifyExperiencePoints = 10,
@@ -145,7 +141,7 @@ namespace MidwayBattle.DataLayer
             {
                 Id = 4,
                 Name = "Southeast Quadrant",
-                Description = "This is a description for the Southeast Quadrant.",
+                Description = "We are near the Midway Islands now, it is recommended you pick up the crew member resupply. This item is extremely valuable.",
                 Accessible = true,
                 Message = "Be advised, enemy carriers have been in this quadrant.",
                 ModifyExperiencePoints = 5,
@@ -167,10 +163,10 @@ namespace MidwayBattle.DataLayer
             {
                 new Weapon(10, "16 inch shell", 30, "Main armament of the battleship",15, 1),
                 new Weapon(11, "5 inch shell", 15, "Secondary armament of the battleship",5, 1),
-                new Weapon(12, "Mark 14 torpedo",40,"The standard United States Navy torpedo.",20, 1),
+                new Weapon(12, "Mark 14 torpedo",40,"The standard United States Navy torpedo",20, 1),
                 new Provisions(20, "Fuel","20 barrels of fuel", 5, 20),
                 new Provisions(21, "Ship Repair Kit","Use this kit to repair your ship if your ship is damaged",5, 10),
-                new Provisions(22, "Crew member resupply", "Transport with additional crew. Use of item gives one additional life.", 15, 1),
+                new Provisions(22, "Crew member resupply", "Transport with additional crew. Use of item gives one additional life", 15, 1),
             };
         }
         public static List<Npc> Npcs()

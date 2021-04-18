@@ -34,7 +34,6 @@
             <Setter Property="Width" Value="90"/>
             <Setter Property="Height" Value="20"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <!--<Setter Property="HorizontalAlignment" Value="Center"/>-->
         </Style>
         <Style x:Key="ContainerLabelStyle" TargetType="Label">
             <Setter Property="Foreground" Value="#525252"/>
@@ -94,7 +93,6 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
-
                     </Grid.RowDefinitions>
                     <Label
                         Grid.Row="0"

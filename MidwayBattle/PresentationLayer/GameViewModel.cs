@@ -583,16 +583,16 @@ namespace MidwayBattle.PresentationLayer
             sb.AppendLine("All Required Game Items");
             foreach (var gameItem in mission.RequiredGameItems)
             {
-                sb.Append(TAB + gameItem.Name);
+                sb.AppendLine(TAB + gameItem.Name);
                 //sb.AppendLine($"  ( {gameItem.Quantity} )");
             }
 
             if (mission.Status == Mission.MissionStatus.Incomplete)
             {
-                sb.AppendLine("Game Items Yet to Gather (Quantity)");
+                sb.AppendLine("Game Items Yet to Gather");
                 foreach (var gameItem in mission.GameItemsNotCompleted(_player.Inventory.ToList()))
                 {
-                    sb.Append(TAB + gameItem.Name);
+                    sb.AppendLine(TAB + gameItem.Name);
                 }
             }
 
@@ -820,23 +820,7 @@ namespace MidwayBattle.PresentationLayer
 
                 CurrentLocationInformation = battleInformation;
                 if (_player.Lives <= 0) OnPlayerDies("Your ship has been completely destroyed.");
-                //else
-                //{
-                //    battleInformation += $"You have been destroyed by {_currentNpc.Name}.";
-                //}
-
-                //if (playerHitPoints >= battleNpcHitPoints)
-                //{
-                //    battleInformation += $"You have destroyed {_currentNpc.Name}.";
-                //    _currentNpc.Lives -= 1;
-                //    //_currentLocation.Npcs.Remove(_currentNpc);
-                //}
-                //else
-                //{
-                //    battleInformation += $"You have been destroyed by {_currentNpc.Name}.";
-                //}
-
-
+ 
             }
             else
             {

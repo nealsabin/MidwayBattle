@@ -14,8 +14,6 @@ namespace MidwayBattle.Models
         #endregion
 
         #region Fields
-        //private int _lives;
-        //private int _health;
         private int _experiencePoints;
         private Weapon _currentWeapon;
         private BattleModeName _battleMode;
@@ -31,16 +29,6 @@ namespace MidwayBattle.Models
 
 
         #region Properties
-        //public int Lives
-        //{
-        //    get { return _lives; }
-        //    set { _lives = value; }
-        //}
-        //public int Health
-        //{
-        //    get { return _health; }
-        //    set { _health = value; }
-        //}
         public int ExperiencePoints
         {
             get { return _experiencePoints; }

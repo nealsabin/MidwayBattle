@@ -515,7 +515,7 @@
                                 <Button
                                     Content="Attack" 
                                     Style="{StaticResource TopBannerButtonStyle}"
-                                    Background="#F44721"
+                                    Background="#ea5f41"
                                     Width="auto"
                                     Margin="0 0 6 0"
                                     Click="AttackButton_Click"/>
@@ -714,7 +714,7 @@
                                 <Button 
                                     Content="Use" 
                                     Style="{StaticResource TopBannerButtonStyle}"
-                                    Background="#F44721"
+                                    Background="#ea5f41"
                                     Width="40"
                                     Margin="0 8 6 0"
                                     Click="UseButton_Click"/>
